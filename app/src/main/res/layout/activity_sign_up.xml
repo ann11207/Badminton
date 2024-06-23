@@ -22,6 +22,7 @@
             android:background="@drawable/ic_back">
 
         </Button>
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,11 +42,11 @@
 
         <TextView
             android:layout_width="150dp"
-            android:gravity="center"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:fontFamily="sans-serif-medium"
+            android:gravity="center"
             android:text="@string/textView_Register"
             android:textColor="@color/white"
             android:textSize="30sp">
@@ -81,17 +82,18 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="5dp"
-            android:hint="@string/input_account">
+            android:hint="@string/input_nameAccount">
 
 
             <com.google.android.material.textfield.TextInputEditText
-                id="@+id/edtSignUp_nameAccount"
+                android:id="@+id/edtSignUp_nameAccount"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/input"
                 android:textSize="15sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -109,6 +111,25 @@
                 android:textSize="15sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/input_phoneNumber"
+            app:endIconDrawable="@drawable/phoneontact">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtSignUp_phoneNumber"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/input"
+                android:textSize="15sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -126,55 +147,51 @@
                 android:textSize="15sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="wrap_content"
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:hint="@string/input_Re_password"
-            app:endIconMode="password_toggle">
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtSignUp_rePassword"
-                android:layout_width="350dp"
+            <RadioGroup
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/input"
-                android:textSize="15sp" />
+                android:orientation="horizontal"
+                android:id="@+id/radioGroupPermissions">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <RadioButton
+                    android:id="@+id/radioButtonSignUp_admin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/white"
+                    android:text="Admin"
+                    android:textColor="@color/white" />
 
-<LinearLayout
-    android:layout_gravity="center"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center">
-    <CheckBox
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_view"
-        android:text="Admin"
-        android:textColor="@color/white">
-    </CheckBox>
-    <CheckBox
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_view"
-        android:text="Staff"
-        android:textColor="@color/white">
-    </CheckBox>
-    <CheckBox
-        android:layout_weight="0.5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_view"
-        android:text="Customer"
-        android:textColor="@color/white">
-    </CheckBox>
-</LinearLayout>
+                <RadioButton
+                    android:id="@+id/radioButtonSignUp_staff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_view"
+                    android:text="Staff"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonSignUp_customer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/bg_view"
+                    android:text="Customer"
+                    android:textColor="@color/white" />
+
+            </RadioGroup>
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/btnSignUp_signUp"
@@ -185,11 +202,8 @@
             android:backgroundTint="#8BD8BD"
             android:text="Sign Up"
             android:textSize="25sp">
+
         </Button>
-
-
-
-
 
 
     </LinearLayout>

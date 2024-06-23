@@ -68,12 +68,13 @@
         <!--            android:paddingLeft="20dp"-->
         <!--            android:textSize="30sp"/>-->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edtLogin_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:hint="@string/input_account">
+            android:hint="Nhập email">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="350dp"
@@ -84,6 +85,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edtLogin_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -101,6 +103,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
+            android:id="@+id/textView_forgotPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -111,6 +114,7 @@
             android:textSize="20sp" />
 
         <Button
+            android:id="@+id/btn_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -156,6 +160,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/textview_createAccount"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

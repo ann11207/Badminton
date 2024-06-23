@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Badminton</string>
-    <string name="input_account">Nhập tài khoản</string>
+    <string name="input_nameAccount">Nhập họ và tên </string>
     <string name="input_email">Nhập email</string>
 
     <string name="textView_login">Đăng nhập</string>
     <string name="input_password">Nhập mật khẩu</string>
-    <string name="input_Re_password">Nhập lại mật khẩu</string>
+    <string name="input_phoneNumber">Nhập số điện thoại</string>
     <string name="textView_forgotPassword">Quên mật khẩu</string>
     <string name="textView_LoginWith">Đăng nhập với</string>
     <string name="textView_Register">Đăng ký</string>

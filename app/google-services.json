@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "475891372673",
+    "project_id": "badminton-ecf20",
+    "storage_bucket": "badminton-ecf20.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:475891372673:android:64f13262b2c5464d257380",
+        "android_client_info": {
+          "package_name": "com.example.badminton"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2rcKLwZoBw0yTqYm3SEnoH1wzW5OEsHQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
