@@ -155,13 +155,60 @@ public class Login extends AppCompatActivity {
 
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-//            Intent intentOpenMain = new Intent(this, MainActivity.class);
-//            startActivity(intentOpenMain);
-//            finish();
-//        }
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DocumentReference df = FirebaseFirestore.getInstance().collection("Users").document(uid);
+            df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    checkRoleUser(documentSnapshot.getId());
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e("Login", "Lỗi khi lấy dữ liệu người dùng: " + e.getMessage());
+                }
+            });
+        }
+    }
+
+    private void checkRoleUser(String uid) {
+        DocumentReference df = firebaseFirestore.collection("Users").document(uid);
+        df.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                String role = documentSnapshot.getString("role");
+                if (role != null) {
+                    switch (role.toLowerCase()) {
+                        case "admin":
+                            startActivity(new Intent(getApplicationContext(), DashBoardAdmin.class));
+                            break;
+                        case "staff":
+                            startActivity(new Intent(getApplicationContext(), DashBoardStaff.class));
+                            break;
+                        case "user":
+                            startActivity(new Intent(getApplicationContext(), DashBoardUser.class));
+                            break;
+                        default:
+                            Log.e("Login", "Vai trò không hợp lệ: " + role);
+                            Toast.makeText(Login.this, "Vai trò không hợp lệ", Toast.LENGTH_SHORT).show();
+                            return;
+                    }
+                    finish();
+                } else {
+                    Log.e("Login", "Không tìm thấy vai trò cho người dùng");
+                    Toast.makeText(Login.this, "Không tìm thấy vai trò cho người dùng", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("Login", "Lỗi khi lấy dữ liệu người dùng: " + e.getMessage());
+                Toast.makeText(Login.this, "Lỗi khi lấy dữ liệu người dùng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
