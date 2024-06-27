@@ -20,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.badminton.R;
 import com.example.badminton.View.Admin.DashBoardAdmin;
+import com.example.badminton.View.ForgetPassWord.ForgetPass;
 import com.example.badminton.View.Staff.DashBoardStaff;
 import com.example.badminton.View.User.DashBoardUser;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,7 +39,7 @@ public class Login extends AppCompatActivity {
     private Button btnLogin;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-
+private TextView textView_forgotPassword;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +65,18 @@ public class Login extends AppCompatActivity {
         TextInputLayout passwordLayout = findViewById(R.id.edtLogin_password);
         inputLoginEmail = emailLayout.getEditText();
         inputLoginPassword = passwordLayout.getEditText();
+        textView_forgotPassword = findViewById(R.id.textView_forgotPassword);
 
         btnLogin = findViewById(R.id.btn_login);
 
+        textView_forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentOpenForgetPass = new Intent(getApplicationContext(), ForgetPass.class);
+                startActivity(intentOpenForgetPass);
+                finish();
+            }
+        });
         btnLogin.setOnClickListener(new View.OnClickListener() {
 
 
@@ -211,5 +221,5 @@ public class Login extends AppCompatActivity {
             }
         });
     }
-    ....
+   
 }

@@ -44,5 +44,7 @@ dependencies {
 
     // thêm thư viện lottie
     implementation ("com.airbnb.android:lottie:6.4.0")
+    // thêm thư viện mã hoá mật khẩu
+    implementation ("org.mindrot:jbcrypt:0.4")
 
 }

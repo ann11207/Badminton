@@ -26,6 +26,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,6 +91,9 @@ public class SignUp extends AppCompatActivity {
                 Toast.makeText(SignUp.this, "Vui lòng chọn vai trò", Toast.LENGTH_SHORT).show();
                 return;
             }
+            String salt = BCrypt.gensalt();
+            String hashedPassword = BCrypt.hashpw(password, salt);
+
 
             firebaseAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                 @Override
@@ -99,7 +104,7 @@ public class SignUp extends AppCompatActivity {
                     Map<String, Object> userInfo = new HashMap<>();
                     userInfo.put("nameAccount", nameAccount);
                     userInfo.put("email", email);
-                    userInfo.put("password", password);
+                    userInfo.put("password", hashedPassword);
                     userInfo.put("phoneNumber", phoneNumber);
                     String role = "";
                     if (roleSelect == radioAdmin.getId()) {
