@@ -47,4 +47,6 @@ dependencies {
     // thêm thư viện mã hoá mật khẩu
     implementation ("org.mindrot:jbcrypt:0.4")
 
+    implementation ("androidx.recyclerview:recyclerview:1.2.1")
+
 }
