@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.Admin.Setting"
+    android:orientation="vertical">
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_back"
+        android:layout_margin="5dp">
+    </ImageButton>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:columnCount="5"
+        android:rowCount="2">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="50dp"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/imgbtn_editInfo"
+                android:layout_width="130dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:background="@drawable/useredit"
+                android:backgroundTint="@color/black">
+
+            </ImageButton>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:text="Tài khoản"
+                android:textColor="@color/black"
+                android:textSize="25sp">
+
+            </TextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="50dp"
+            android:orientation="vertical">
+
+            <ImageButton
+
+                android:layout_width="130dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:background="@drawable/stadium"
+                android:backgroundTint="@color/black">
+
+            </ImageButton>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Thêm sân"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:layout_marginTop="20dp">
+
+            </TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="50dp"
+            android:orientation="vertical">
+
+            <ImageButton
+
+                android:layout_width="130dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:background="@drawable/stadium"
+                android:backgroundTint="@color/black">
+
+            </ImageButton>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Thêm sân"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:layout_marginTop="20dp">
+
+            </TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="50dp"
+            android:orientation="vertical">
+
+            <ImageButton
+
+                android:layout_width="130dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:background="@drawable/stadium"
+                android:backgroundTint="@color/black">
+
+            </ImageButton>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Thêm sân"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:layout_marginTop="20dp">
+
+            </TextView>
+        </LinearLayout> <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        android:orientation="vertical">
+
+        <ImageButton
+
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:background="@drawable/stadium"
+            android:backgroundTint="@color/black">
+
+        </ImageButton>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Thêm sân"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:layout_marginTop="20dp">
+
+        </TextView>
+    </LinearLayout>
+
+    </GridLayout>
+
+</LinearLayout>

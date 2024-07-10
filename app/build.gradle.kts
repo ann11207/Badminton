@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -34,6 +35,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -41,5 +44,9 @@ dependencies {
 
     // thêm thư viện lottie
     implementation ("com.airbnb.android:lottie:6.4.0")
+    // thêm thư viện mã hoá mật khẩu
+    implementation ("org.mindrot:jbcrypt:0.4")
+
+    implementation ("androidx.recyclerview:recyclerview:1.2.1")
 
 }

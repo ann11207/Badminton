@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +15,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Badminton"
         tools:targetApi="31">
+        <activity
+            android:name=".View.Admin.dialog_edit_user"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.test"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.ManageUserAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.ItemAccountUser"
+            android:exported="false" />
+        <activity
+            android:name=".View.ForgetPassWord.ForgetPass"
+            android:exported="false" />
         <activity
             android:name=".View.User.DashBoardUser"
             android:exported="false" />
