@@ -55,6 +55,7 @@ public class SignUp extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         inputNameAccount = findViewById(R.id.edtSignUp_nameAccount);
+
         inputEmail = findViewById(R.id.edtSignUp_email);
         inputPassword = findViewById(R.id.edtSignUp_password);
         inputPhoneNumber = findViewById(R.id.edtSignUp_phoneNumber);
@@ -68,6 +69,7 @@ public class SignUp extends AppCompatActivity {
         btnSignUp.setOnClickListener(v -> {
             // Lấy thông tin người dùng từ các EditText
             String nameAccount = inputNameAccount.getText().toString().trim();
+
             String email = inputEmail.getText().toString().trim();
             String password = inputPassword.getText().toString().trim();
             String phoneNumber = inputPhoneNumber.getText().toString().trim();
@@ -94,31 +96,36 @@ public class SignUp extends AppCompatActivity {
             String salt = BCrypt.gensalt();
             String hashedPassword = BCrypt.hashpw(password, salt);
 
-
             firebaseAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                 @Override
                 public void onSuccess(AuthResult authResult) {
                     FirebaseUser user = firebaseAuth.getCurrentUser();
-                    Toast.makeText(SignUp.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                    DocumentReference df = firebaseFirestore.collection("Users").document(user.getUid());
-                    Map<String, Object> userInfo = new HashMap<>();
-                    userInfo.put("nameAccount", nameAccount);
-                    userInfo.put("email", email);
-                    userInfo.put("password", hashedPassword);
-                    userInfo.put("phoneNumber", phoneNumber);
-                    String role = "";
-                    if (roleSelect == radioAdmin.getId()) {
-                        role = "admin";
-                    } else if (roleSelect == radioStaff.getId()) {
-                        role = "staff";
-                    } else if (roleSelect == radioCustomer.getId()) {
-                        role = "customer";
-                    }
-                    userInfo.put("role", role);
-                    df.set(userInfo);
+                    if (user != null) {
+                        String uid = user.getUid();
+                        Toast.makeText(SignUp.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                        DocumentReference df = firebaseFirestore.collection("Users").document(uid);
+                        Map<String, Object> userInfo = new HashMap<>();
+                        userInfo.put("id", uid);
+                        userInfo.put("nameAccount", nameAccount);
+                        userInfo.put("email", email);
+                        userInfo.put("password", hashedPassword);
+                        userInfo.put("phoneNumber", phoneNumber);
+                        String role = "";
+                        if (roleSelect == radioAdmin.getId()) {
+                            role = "admin";
+                        } else if (roleSelect == radioStaff.getId()) {
+                            role = "staff";
+                        } else if (roleSelect == radioCustomer.getId()) {
+                            role = "user";
+                        }
+                        userInfo.put("role", role);
+                        df.set(userInfo);
 
-                    startActivity(new Intent(getApplicationContext(), Login.class));
-                    finish();
+                        startActivity(new Intent(getApplicationContext(), Login.class));
+                        finish();
+                    } else {
+                        Toast.makeText(SignUp.this, "User creation failed", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }).addOnFailureListener(e -> {
                 Log.e("SignUp", "Error: " + e.getMessage());

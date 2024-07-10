@@ -53,14 +53,6 @@ public class DashBoardAdmin extends AppCompatActivity {
 
 
 
-        btnHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentOpenHistory = new Intent(DashBoardAdmin.this, test.class);
-                startActivity(intentOpenHistory);
-
-            }
-        });
 
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
