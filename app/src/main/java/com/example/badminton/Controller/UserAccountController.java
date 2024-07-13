@@ -44,4 +44,8 @@ public class UserAccountController {
                 .addOnSuccessListener(successListener)
                 .addOnFailureListener(failureListener);
     }
+
+    public void detailUser(UserAccountModel user, OnSuccessListener<UserAccountModel> successListener, OnFailureListener failureListener){
+
+    }
 }

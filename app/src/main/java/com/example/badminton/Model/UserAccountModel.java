@@ -22,7 +22,7 @@ public class UserAccountModel {
     public UserAccountModel() {
     }
 
-    // Constructor có tham số
+
     public UserAccountModel(String id, String name, String role) {
         this.id = id;
         this.nameAccount = name;
