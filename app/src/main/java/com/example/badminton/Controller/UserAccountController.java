@@ -1,8 +1,17 @@
 package com.example.badminton.Controller;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import com.example.badminton.Model.UserAccountModel;
+import com.example.badminton.View.User.InfomationAccountCustomer;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.auth.User;
@@ -13,8 +22,14 @@ import java.util.List;
 public class UserAccountController {
     private FirebaseFirestore firestore;
 
+    private FirebaseAuth auth;
+    private FirebaseUser currentUser;
+
     public UserAccountController() {
         firestore = FirebaseFirestore.getInstance();
+
+        auth = FirebaseAuth.getInstance();
+        currentUser = auth.getCurrentUser();
     }
 
     public void loadUsers(OnSuccessListener<List<UserAccountModel>> successListener, OnFailureListener failureListener) {
@@ -45,7 +60,29 @@ public class UserAccountController {
                 .addOnFailureListener(failureListener);
     }
 
-    public void detailUser(UserAccountModel user, OnSuccessListener<UserAccountModel> successListener, OnFailureListener failureListener){
-
+    public void loadUserById(String userId, OnSuccessListener<UserAccountModel> successListener, OnFailureListener failureListener) {
+        firestore.collection("Users").document(userId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    UserAccountModel user = documentSnapshot.toObject(UserAccountModel.class);
+                    successListener.onSuccess(user);
+                })
+                .addOnFailureListener(failureListener);
     }
+
+    public void updateUserPassword(String currentPassword, String newPassword, OnSuccessListener<Void> successListener, OnFailureListener failureListener) {
+        if (currentUser != null) {
+            AuthCredential credential = EmailAuthProvider.getCredential(currentUser.getEmail(), currentPassword);
+
+            currentUser.reauthenticate(credential)
+                    .addOnSuccessListener(aVoid -> currentUser.updatePassword(newPassword)
+                            .addOnSuccessListener(successListener)
+                            .addOnFailureListener(failureListener))
+                    .addOnFailureListener(failureListener);
+        } else {
+            failureListener.onFailure(new Exception("Current user is not logged in"));
+        }
+    }
+
+
 }

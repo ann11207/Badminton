@@ -77,5 +77,6 @@ public class UserAccountAdapter extends RecyclerView.Adapter<UserAccountAdapter.
         void onDeleteClick(UserAccountModel user);
 
         void onInfoClick(UserAccountModel user);
+
     }
 }

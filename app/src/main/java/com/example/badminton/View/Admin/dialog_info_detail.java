@@ -29,29 +29,5 @@ public class dialog_info_detail extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-//        avatar = findViewById(R.id.detailInfo_avatar);
-//        textViewEmail =findViewById(R.id.detailInfo_email);
-//        textViewName = findViewById(R.id.detailInfo_fullName);
-//        textViewPhone = findViewById(R.id.detailInfo_phoneNumber);
-//        textViewRole = findViewById(R.id.detailInfot_role);
-//
-//
-//        String userId = getIntent().getStringExtra("userId");
-//        if (userId != null ){
-//            loadUser(userId);
-//        }else {
-//            Toast.makeText(this, "Lỗi", Toast.LENGTH_SHORT).show();
-//        }
-//
-//        String name = getIntent().getStringExtra("nameAccount");
-//        String email = getIntent().getStringExtra("email");
-//        String phoneNumber = getIntent().getStringExtra("phoneNumber");
-//        String role = getIntent().getStringExtra("role");
-//
-//
-//        textViewName.setText(name);
-//        textViewEmail.setText(email);
-//        textViewPhone.setText(phoneNumber);
-//        textViewRole.setText(role);
     }
 }

@@ -16,6 +16,12 @@
         android:theme="@style/Theme.Badminton"
         tools:targetApi="31">
         <activity
+            android:name=".View.User.test"
+            android:exported="false" />
+        <activity
+            android:name=".View.User.InfomationAccountCustomer"
+            android:exported="false" />
+        <activity
             android:name=".View.Admin.dialog_info_detail"
             android:exported="false" />
         <activity

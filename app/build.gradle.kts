@@ -52,4 +52,6 @@ dependencies {
     implementation("androidx.gridlayout:gridlayout:1.0.0")
 
     implementation("androidx.cardview:cardview:1.0.0")
+    implementation( "com.google.firebase:firebase-auth:21.1.0")
+    implementation ("com.google.firebase:firebase-firestore:24.3.0")
 }
