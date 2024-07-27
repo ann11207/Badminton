@@ -1,10 +1,8 @@
 package com.example.badminton.Controller;
 
-import android.util.Log;
-import android.widget.Toast;
+import android.net.Uri;
 
 import com.example.badminton.Model.UserAccountModel;
-import com.example.badminton.View.User.InfomationAccountCustomer;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthCredential;
@@ -14,20 +12,26 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.User;
+import com.google.firebase.ktx.Firebase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class UserAccountController {
     private FirebaseFirestore firestore;
-
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
+    private FirebaseStorage storage;
+
+
 
     public UserAccountController() {
         firestore = FirebaseFirestore.getInstance();
-
+        storage = FirebaseStorage.getInstance();
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
     }
@@ -83,6 +87,4 @@ public class UserAccountController {
             failureListener.onFailure(new Exception("Current user is not logged in"));
         }
     }
-
-
 }

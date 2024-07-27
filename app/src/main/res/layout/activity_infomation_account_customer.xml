@@ -5,22 +5,24 @@
     android:orientation="vertical"
     android:id="@+id/main"
     android:padding="16dp">
-    <ImageView
-        android:id="@+id/imgAvatar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:scaleType="centerCrop"
-        android:layout_marginBottom="16dp"
-        android:src="@android:drawable/ic_menu_camera" />
+<de.hdodenhof.circleimageview.CircleImageView
+    android:id="@+id/avatar"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:layout_gravity="center"
+    android:scaleType="centerCrop"
+    android:layout_marginBottom="16dp"
+    android:src="@android:drawable/ic_menu_camera"
+    />
 
-
-    <Button
-        android:id="@+id/buttonSelectImage"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/text_avatar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Chọn ảnh đại diện"
-        android:layout_marginBottom="8dp"/>
+        android:text="Thay đổi ảnh đại diện"
+        android:paddingBottom="5dp"
+        android:layout_gravity="center">
+    </TextView>
     <EditText
         android:id="@+id/edtInfoCustomer_fullName"
         android:layout_width="match_parent"
@@ -66,14 +68,20 @@
         android:id="@+id/buttonUpdateInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Update Info"
+        android:text="Cập nhật thông tin"
         android:layout_marginBottom="8dp"/>
 
     <Button
         android:id="@+id/buttonUpdatePassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Update Password"
+        android:text="Cập nhật mật khẩu"
+        android:layout_marginBottom="8dp"/>
+    <Button
+        android:id="@+id/buttonUpdateAvatar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cập nhật ảnh đại diện"
         android:layout_marginBottom="8dp"/>
 
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -13,10 +14,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.badminton.Model.CourtDBModel;
+import com.example.badminton.Model.Queries.courtDB;
 import com.example.badminton.R;
+import com.example.badminton.View.Adapter.CourtAdapter;
+import com.example.badminton.View.Adapter.GridViewCourtAdapter;
 import com.example.badminton.View.Login;
 import com.example.badminton.View.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.List;
 
 public class DashBoardAdmin extends AppCompatActivity {
     private Button btnSetting;
@@ -24,7 +31,9 @@ public class DashBoardAdmin extends AppCompatActivity {
     private Button btnHistory;
     private Button btnTotalInDay;
     private Button btnLogout;
-
+    private GridViewCourtAdapter gridViewCourtAdapter;
+    private GridView gridViewCourt;
+    private courtDB courtDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +45,10 @@ public class DashBoardAdmin extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        gridViewCourt = findViewById(R.id.gridView_Court);
+        courtDatabase = new courtDB(this);
+        loadCourts();
 
         btnHistory = findViewById(R.id.History);
         btnLogout = findViewById(R.id.btn_Logout);
@@ -51,10 +64,6 @@ public class DashBoardAdmin extends AppCompatActivity {
         });
 
 
-
-
-
-
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,5 +73,12 @@ public class DashBoardAdmin extends AppCompatActivity {
                 finish();
             }
         });
+
+    }
+
+    private void loadCourts() {
+        List<CourtDBModel> courtList = courtDatabase.getAllCourts();
+        gridViewCourtAdapter = new GridViewCourtAdapter(this, courtList);
+        gridViewCourt.setAdapter(gridViewCourtAdapter);
     }
 }

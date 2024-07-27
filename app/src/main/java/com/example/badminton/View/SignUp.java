@@ -69,7 +69,7 @@ public class SignUp extends AppCompatActivity {
         btnSignUp.setOnClickListener(v -> {
             // Lấy thông tin người dùng từ các EditText
             String nameAccount = inputNameAccount.getText().toString().trim();
-
+            String avatarUrl = "";
             String email = inputEmail.getText().toString().trim();
             String password = inputPassword.getText().toString().trim();
             String phoneNumber = inputPhoneNumber.getText().toString().trim();
@@ -110,6 +110,7 @@ public class SignUp extends AppCompatActivity {
                         userInfo.put("email", email);
                         userInfo.put("password", hashedPassword);
                         userInfo.put("phoneNumber", phoneNumber);
+                        userInfo.put("avatarUrl", avatarUrl);
                         String role = "";
                         if (roleSelect == radioAdmin.getId()) {
                             role = "admin";

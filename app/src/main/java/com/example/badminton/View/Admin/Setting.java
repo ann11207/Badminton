@@ -15,7 +15,7 @@ import com.example.badminton.R;
 
 public class Setting extends AppCompatActivity {
 
-    ImageButton imgbtn_editInfo, imgbtn_back;
+    ImageButton imgbtn_editInfo,imgbtn_manageCourt, imgbtn_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +28,13 @@ public class Setting extends AppCompatActivity {
             return insets;
         });
 
-        imgbtn_editInfo = findViewById(R.id.imgbtn_editInfo);
+
         imgbtn_back = findViewById(R.id.btn_back);
+        imgbtn_editInfo = findViewById(R.id.imgbtn_editInfo);
+        imgbtn_manageCourt = findViewById(R.id.imgbtn_manageCourt);
+
+
+
         imgbtn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,6 +49,15 @@ public class Setting extends AppCompatActivity {
             public void onClick(View v) {
                 Intent openListAccount = new Intent(Setting.this, ManageUserAdmin.class);
                 startActivity(openListAccount);
+            }
+        });
+
+        imgbtn_manageCourt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent openListCourt = new Intent(Setting.this, ManageCourt.class);
+
+                startActivity(openListCourt);
             }
         });
     }
