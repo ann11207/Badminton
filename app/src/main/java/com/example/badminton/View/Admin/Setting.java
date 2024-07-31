@@ -15,7 +15,7 @@ import com.example.badminton.R;
 
 public class Setting extends AppCompatActivity {
 
-    ImageButton imgbtn_editInfo,imgbtn_manageCourt, imgbtn_back;
+    ImageButton imgbtn_editInfo,imgbtn_manageCourt, imgbtn_back, imgbtn_addCustomer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,15 @@ public class Setting extends AppCompatActivity {
         imgbtn_back = findViewById(R.id.btn_back);
         imgbtn_editInfo = findViewById(R.id.imgbtn_editInfo);
         imgbtn_manageCourt = findViewById(R.id.imgbtn_manageCourt);
+        imgbtn_addCustomer = findViewById(R.id.imgbtn_manageCustomer);
+        imgbtn_addCustomer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent openListCustomer = new Intent(Setting.this, ManageCustomer.class);
+                startActivity(openListCustomer);
+                finish();
+            }
+        });
 
 
 

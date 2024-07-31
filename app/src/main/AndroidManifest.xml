@@ -18,6 +18,34 @@
         android:theme="@style/Theme.Badminton"
         tools:targetApi="31">
         <activity
+            android:name=".View.Admin.AddEditCustomerDialog"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.customer_item"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.ManageCustomer"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.AddEditCustomerDialog"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.activity_customer_form"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.item_customer"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.dialog_select_customer"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.dialog_customer_select"
+            android:exported="false"
+            android:theme="@style/Theme.Badminton" />
+        <activity
+            android:name=".dialog_customer_select"
+            android:exported="false" />
+        <activity
             android:name=".View.Admin.GridViewCourt"
             android:exported="false" />
         <activity

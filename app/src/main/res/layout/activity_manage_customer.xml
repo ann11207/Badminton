@@ -5,8 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".View.Admin.ManageCourt">
+    tools:context=".View.Admin.ManageCustomer"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,20 +27,19 @@
             android:layout_gravity="center"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:text="Thông Tin Sân"
+            android:text="Thông Đối Tượng"
             android:textSize="25sp">
 
         </TextView>
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/button_add_court"
+        android:id="@+id/button_add_customer"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:layout_margin="20dp"
         android:src="@android:drawable/ic_input_add">
-
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
     <LinearLayout
@@ -58,20 +57,20 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textViewNameCourt"
+            android:id="@+id/textViewCustomer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Tên sân"
+            android:text="Loại đối tượng"
             android:textSize="25sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textViewStatus"
+            android:id="@+id/textViewPrice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Trạng thái"
+            android:text="Giá tiền"
             android:textSize="25sp"
             android:textStyle="bold" />
 
@@ -95,7 +94,7 @@
         android:layout_height="wrap_content">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcv_court"
+            android:id="@+id/rcv_customer"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -104,3 +103,4 @@
 
 
 </LinearLayout>
+

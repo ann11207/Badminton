@@ -10,12 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.badminton.Model.CourtDBModel;
+import com.example.badminton.Model.DBHelper.DBHelper;
 import com.example.badminton.R;
 
 import java.util.List;
 public class GridViewCourtAdapter extends BaseAdapter{private Context context;
     private List<CourtDBModel> courtList;
-
+    private Context contexCus;
+    private DBHelper dbHelper;
     public GridViewCourtAdapter(Context context, List<CourtDBModel> courtList) {
         this.context = context;
         this.courtList = courtList;
@@ -44,14 +46,29 @@ public class GridViewCourtAdapter extends BaseAdapter{private Context context;
 
         ImageView imageView = convertView.findViewById(R.id.imgViewCourt1);
         TextView nameView = convertView.findViewById(R.id.textViewNameCourt1);
-        TextView statusView = convertView.findViewById(R.id.textViewStatusCourt1);
+        ImageView statusIcon = convertView.findViewById(R.id.statusIcon);
 
         CourtDBModel court = courtList.get(position);
-        nameView.setText(court.getName());
-        statusView.setText(court.getStatusCourt());
+        nameView.setText("Sân "+court.getName());
+//        statusView.setText(court.getStatusCourt());
 
         if (court.getImage() != null) {
             imageView.setImageBitmap(convertToBitmap(court.getImage()));
+
+        }
+        switch (court.getStatusCourt()) {
+            case "Hoạt động":
+                statusIcon.setImageResource(R.drawable.icon_active);
+                break;
+            case "Bảo trì":
+                statusIcon.setImageResource(R.drawable.baotri);
+                break;
+            case "Trống":
+                statusIcon.setImageResource(R.drawable.empty); // Màu xám
+                break;
+            default:
+                statusIcon.setImageResource(R.drawable.empty); // Mặc định
+                break;
         }
 
         return convertView;
@@ -60,4 +77,5 @@ public class GridViewCourtAdapter extends BaseAdapter{private Context context;
     private Bitmap convertToBitmap(byte[] image) {
         return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
+
 }

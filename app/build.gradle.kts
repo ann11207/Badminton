@@ -27,6 +27,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -39,6 +42,8 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
     implementation(libs.firebase.database)
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -62,6 +67,14 @@ dependencies {
 
     implementation ("de.hdodenhof:circleimageview:3.1.0")
 
-    implementation("com.vanniktech:android-image-cropper:4.3.3")
+    implementation("com.github.AnyChart:AnyChart-Android:0.0.3")
+    implementation ("com.github.AnyChart:AnyChart-Android:1.1.5")
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+
+
+
+
+
 
 }

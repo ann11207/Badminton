@@ -7,9 +7,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +30,7 @@ public class AddEditCourtDialog extends Dialog {
     private Button btnSave, btnCancel;
     private CourtDBModel court;
     private boolean isEditMode;
+    private Spinner spinnerStatus;
 
     public AddEditCourtDialog(@NonNull Context context, CourtDBModel court, boolean isEditMode) {
         super(context);
@@ -39,13 +43,20 @@ public class AddEditCourtDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_court_dialog);
-
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.width = WindowManager.LayoutParams.MATCH_PARENT; // hoặc giá trị cụ thể
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT; // hoặc giá trị cụ thể
+        getWindow().setAttributes(params);
         edtName = findViewById(R.id.edt_name);
-        edtStatus = findViewById(R.id.edt_status);
+//        edtStatus = findViewById(R.id.edt_status);
         imgCourt = findViewById(R.id.img_court);
         btnSave = findViewById(R.id.btn_save);
         btnCancel = findViewById(R.id.btn_cancel);
-
+        spinnerStatus = findViewById(R.id.spinner_status);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.court_status_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerStatus.setAdapter(adapter);
         if (isEditMode && court != null) {
             edtName.setText(court.getName());
             edtStatus.setText(court.getStatusCourt());
@@ -56,10 +67,11 @@ public class AddEditCourtDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 String name = edtName.getText().toString().trim();
-                String status = edtStatus.getText().toString().trim();
+//                String status = edtStatus.getText().toString().trim();
+                String status = spinnerStatus.getSelectedItem().toString();
                 byte[] image = convertToByteArray(((BitmapDrawable) imgCourt.getDrawable()).getBitmap());
 
-                if (name.isEmpty() || status.isEmpty() || image == null) {
+                if (name.isEmpty() || status==null|| image == null) {
                     Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -90,7 +102,7 @@ public class AddEditCourtDialog extends Dialog {
         imgCourt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Implement logic to select image
+
             }
         });
     }

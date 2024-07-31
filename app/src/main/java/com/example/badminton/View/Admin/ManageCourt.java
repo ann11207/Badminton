@@ -23,6 +23,7 @@ public class ManageCourt extends AppCompatActivity {
     private CourtAdapter courtAdapter;
     private courtDB courtDatabase;
 //    private Button btnAdd;
+
     private FloatingActionButton btnAdd;
 
     @Override
@@ -31,8 +32,10 @@ public class ManageCourt extends AppCompatActivity {
         setContentView(R.layout.activity_manage_court);
 
         recyclerView = findViewById(R.id.rcv_court);
-        btnAdd = findViewById(R.id.button_add_court);
+
         courtDatabase = new courtDB(this);
+
+        btnAdd = findViewById(R.id.button_add_court);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         loadCourts();
@@ -40,7 +43,7 @@ public class ManageCourt extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Mở dialog để thêm sân mới
+
                 openAddCourtDialog();
             }
         });
@@ -49,7 +52,7 @@ public class ManageCourt extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Quay lại màn hình trước đó
+
                 finish();
             }
         });
@@ -82,7 +85,7 @@ public class ManageCourt extends AppCompatActivity {
     }
 
     private void openAddCourtDialog() {
-        // Implement the logic to open a dialog for adding a new court
+
         AddEditCourtDialog dialog = new AddEditCourtDialog(this, null, false);
         dialog.setOnDismissListener(dialogInterface -> loadCourts());
         dialog.show();

@@ -7,15 +7,21 @@
 
     <EditText
         android:id="@+id/edt_name"
+        android:inputType="number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Tên sân"/>
 
-    <EditText
-        android:id="@+id/edt_status"
+<!--    <EditText-->
+<!--        android:id="@+id/edt_status"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Trạng thái"/>-->
+    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Trạng thái"/>
+        android:id="@+id/spinner_status">
+    </Spinner>
 
     <ImageView
         android:id="@+id/img_court"

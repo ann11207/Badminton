@@ -1,5 +1,6 @@
 package com.example.badminton.Model.Queries;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -20,7 +21,7 @@ public class courtDB extends DBHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name", name);
-        values.put("statusCourt", statusCourt);
+        values.put("statusCourt", "trống");
         values.put("image", image);
         long result = db.insert("Court", null, values);
         return result != -1;
@@ -42,6 +43,15 @@ public class courtDB extends DBHelper {
         return result > 0;
     }
 
+    public Cursor getCourts() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        return db.rawQuery("SELECT id, name FROM Court", null);
+    }
+
+
+
+    @SuppressLint("Range")
     public List<CourtDBModel> getAllCourts() {
         List<CourtDBModel> courts = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
