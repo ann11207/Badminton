@@ -20,10 +20,12 @@ import java.util.List;
 public class GridViewCustomerAdapter extends BaseAdapter {
     private Context context;
     private List<CustomerDBModel> customerList;
+    private int courtId; // Thêm biến này
 
-    public GridViewCustomerAdapter(Context context, List<CustomerDBModel> customerList) {
+    public GridViewCustomerAdapter(Context context, List<CustomerDBModel> customerList, int courtId) {
         this.context = context;
         this.customerList = customerList;
+        this.courtId = courtId; // Khởi tạo biến này
     }
 
     @Override
@@ -62,6 +64,7 @@ public class GridViewCustomerAdapter extends BaseAdapter {
         convertView.setOnClickListener(v -> {
             Intent openListCustomer = new Intent(context, Order.class);
             openListCustomer.putExtra("customer_id", customer.getId());
+            openListCustomer.putExtra("court_id", courtId); // Truyền courtId vào Intent
             context.startActivity(openListCustomer);
         });
 

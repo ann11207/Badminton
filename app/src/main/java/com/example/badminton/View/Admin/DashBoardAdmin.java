@@ -22,10 +22,8 @@ import com.example.badminton.Chart.ChartUtils;
 import com.example.badminton.Model.CourtDBModel;
 import com.example.badminton.Model.Queries.courtDB;
 import com.example.badminton.R;
-import com.example.badminton.View.Adapter.CourtAdapter;
 import com.example.badminton.View.Adapter.GridViewCourtAdapter;
 import com.example.badminton.View.Login;
-import com.example.badminton.View.MainActivity;
 import com.github.mikephil.charting.charts.BarChart;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,17 +39,14 @@ public class DashBoardAdmin extends AppCompatActivity {
     private Button btnSetting;
     private Button btnQualityControl;
     private Button btnHistory;
-    private Button btnTotalInDay;
     private Button btnLogout;
-    private GridViewCourtAdapter gridViewCourtAdapter;
     private GridView gridViewCourt;
+    private GridViewCourtAdapter gridViewCourtAdapter;
     private courtDB courtDatabase;
     private BarChart barChart;
     private TextView textViewName, textViewRole, textViewDate, textViewTime;
-    private Handler handler ;
+    private Handler handler;
     private Runnable runnable;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,69 +59,43 @@ public class DashBoardAdmin extends AppCompatActivity {
             return insets;
         });
 
-
         handler = new Handler();
         runnable = new Runnable() {
             @Override
             public void run() {
                 updateDateTime();
+                updateDashboard(); // Cập nhật dữ liệu dashboard
                 handler.postDelayed(this, 1000); // Cập nhật mỗi giây
             }
         };
 
         textViewName = findViewById(R.id.textView_name);
         textViewRole = findViewById(R.id.textView_role);
-        loadUserData();
-
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-        String currentDateTime = dateFormat.format(new Date());
-        String currentTime = timeFormat.format(new Date());
         textViewDate = findViewById(R.id.textView_date);
         textViewTime = findViewById(R.id.textView_time);
-        textViewTime.setText(currentTime);
-        textViewDate.setText(currentDateTime);
-
-
         barChart = findViewById(R.id.any_chart_view);
-
-
         gridViewCourt = findViewById(R.id.gridView_Court);
-
-
         courtDatabase = new courtDB(this);
 
-
-        btnHistory = findViewById(R.id.History);
-        btnLogout = findViewById(R.id.btn_Logout);
         btnSetting = findViewById(R.id.Setting);
+        btnLogout = findViewById(R.id.btn_Logout);
 
-        btnSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentOpenSettingDetail = new Intent(DashBoardAdmin.this, Setting.class);
-                startActivity(intentOpenSettingDetail);
-
-            }
+        btnSetting.setOnClickListener(v -> {
+            Intent intentOpenSettingDetail = new Intent(DashBoardAdmin.this, Setting.class);
+            startActivity(intentOpenSettingDetail);
         });
 
-
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Toast.makeText(getApplicationContext(), " Đăng xuất thành công ", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), Login.class));
-                finish();
-            }
+        btnLogout.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(getApplicationContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(), Login.class));
+            finish();
         });
 
-        setupChart();
-        loadCourts();
+        loadUserData();
         handler.post(runnable);
-
-
     }
+
     private void updateDateTime() {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
@@ -138,6 +107,11 @@ public class DashBoardAdmin extends AppCompatActivity {
 
         textViewDate.setText(currentDateTime);
         textViewTime.setText(currentTime);
+    }
+
+    private void updateDashboard() {
+        loadCourts();
+        setupChart();
     }
 
     @Override
@@ -164,7 +138,6 @@ public class DashBoardAdmin extends AppCompatActivity {
         }
     }
 
-
     private void loadUserData() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -177,12 +150,9 @@ public class DashBoardAdmin extends AppCompatActivity {
                             String nameAccount = documentSnapshot.getString("nameAccount");
                             String role = documentSnapshot.getString("role");
 
-
-
                             // Hiển thị tên tài khoản
-
-                            textViewName.setText("Tên: " +nameAccount);
-                            textViewRole.setText("Quyền: " +role);
+                            textViewName.setText("Tên: " + nameAccount);
+                            textViewRole.setText("Quyền: " + role);
                         } else {
                             Toast.makeText(this, "Không tìm thấy tài liệu", Toast.LENGTH_SHORT).show();
                         }
@@ -191,8 +161,5 @@ public class DashBoardAdmin extends AppCompatActivity {
                         Toast.makeText(this, "Lỗi khi tải dữ liệu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         }
-
     }
-
-
 }

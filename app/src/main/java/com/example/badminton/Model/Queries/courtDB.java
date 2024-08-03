@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.badminton.Model.CourtDBModel;
 import com.example.badminton.Model.DBHelper.DBHelper;
@@ -21,7 +22,7 @@ public class courtDB extends DBHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name", name);
-        values.put("statusCourt", "trống");
+        values.put("statusCourt", statusCourt);
         values.put("image", image);
         long result = db.insert("Court", null, values);
         return result != -1;
@@ -45,11 +46,8 @@ public class courtDB extends DBHelper {
 
     public Cursor getCourts() {
         SQLiteDatabase db = this.getReadableDatabase();
-
         return db.rawQuery("SELECT id, name FROM Court", null);
     }
-
-
 
     @SuppressLint("Range")
     public List<CourtDBModel> getAllCourts() {
@@ -68,5 +66,42 @@ public class courtDB extends DBHelper {
         }
         cursor.close();
         return courts;
+    }
+
+    public void updateCourtStatus(int courtId, String status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("statusCourt", status);
+        db.update("Court", contentValues, "id = ?", new String[]{String.valueOf(courtId)});
+    }
+
+    @SuppressLint("Range")
+    public CourtDBModel getCourtById(int courtId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        CourtDBModel court = null;
+
+        try {
+            cursor = db.query("Court", null, "id = ?", new String[]{String.valueOf(courtId)}, null, null, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                court = new CourtDBModel();
+                court.setId(cursor.getInt(cursor.getColumnIndex("id")));
+                court.setName(cursor.getString(cursor.getColumnIndex("name")));
+                court.setStatusCourt(cursor.getString(cursor.getColumnIndex("statusCourt")));
+                court.setImage(cursor.getBlob(cursor.getColumnIndex("image")));
+                Log.d("courtDB", "Court found: " + court.getName());
+            } else {
+                Log.e("courtDB", "No court found with ID: " + courtId);
+            }
+        } catch (Exception e) {
+            Log.e("courtDB", "Error getting court by ID", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return court;
     }
 }

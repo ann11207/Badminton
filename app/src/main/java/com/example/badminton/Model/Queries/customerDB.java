@@ -87,5 +87,22 @@ public class customerDB extends DBHelper {
         }
         return customerList;
     }
-}
+    @SuppressLint("Range")
+    public CustomerDBModel getCustomerById(int customerId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query("Customer", null, "id = ?", new String[]{String.valueOf(customerId)}, null, null, null);
 
+        if (cursor != null && cursor.moveToFirst()) {
+            CustomerDBModel customer = new CustomerDBModel();
+            customer.setId(cursor.getInt(cursor.getColumnIndex("id")));
+            customer.setName(cursor.getString(cursor.getColumnIndex("name")));
+            cursor.close();
+            return customer;
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+        return null;
+    }
+}

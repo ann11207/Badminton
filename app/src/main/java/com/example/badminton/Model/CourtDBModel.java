@@ -9,6 +9,13 @@ public class CourtDBModel {
 
     public CourtDBModel() {}
 
+    public CourtDBModel(int id, String name, String statusCourt, byte[] image) {
+        this.id = id;
+        this.name = name;
+        this.statusCourt = statusCourt;
+        this.image = image;
+    }
+
     public int getId() {
         return id;
     }

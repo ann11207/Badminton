@@ -1,4 +1,5 @@
 package com.example.badminton.View.Adapter;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,21 +12,17 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.badminton.Model.CourtDBModel;
 import com.example.badminton.Model.CustomerDBModel;
-import com.example.badminton.Model.DBHelper.DBHelper;
 import com.example.badminton.Model.Queries.customerDB;
 import com.example.badminton.R;
 
 import java.util.List;
-public class GridViewCourtAdapter extends BaseAdapter{private Context context;
+
+public class GridViewCourtAdapter extends BaseAdapter {
+    private Context context;
     private List<CourtDBModel> courtList;
-    private Context contexCus;
-    private DBHelper dbHelper;
-    private List<CustomerDBModel>customerList;
+    private List<CustomerDBModel> customerList;
 
     public GridViewCourtAdapter(Context context, List<CourtDBModel> courtList) {
         this.context = context;
@@ -58,13 +55,12 @@ public class GridViewCourtAdapter extends BaseAdapter{private Context context;
         ImageView statusIcon = convertView.findViewById(R.id.statusIcon);
 
         CourtDBModel court = courtList.get(position);
-        nameView.setText("Sân "+court.getName());
-//        statusView.setText(court.getStatusCourt());
+        nameView.setText("Sân " + court.getName());
 
         if (court.getImage() != null) {
             imageView.setImageBitmap(convertToBitmap(court.getImage()));
-
         }
+
         switch (court.getStatusCourt()) {
             case "Hoạt động":
                 statusIcon.setImageResource(R.drawable.icon_active);
@@ -80,7 +76,7 @@ public class GridViewCourtAdapter extends BaseAdapter{private Context context;
                 break;
         }
 
-        convertView.setOnClickListener(v -> showCustomerList(court));
+        convertView.setOnClickListener(v -> showCustomerList(court.getId()));
 
         return convertView;
     }
@@ -89,8 +85,7 @@ public class GridViewCourtAdapter extends BaseAdapter{private Context context;
         return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
 
-
-    private void showCustomerList(CourtDBModel court){
+    private void showCustomerList(int courtId) {
         Dialog customerDialog = new Dialog(context);
         customerDialog.setContentView(R.layout.activity_dialog_customer_list);
         GridView gridViewCustomer = customerDialog.findViewById(R.id.grid_view_customer);
@@ -98,7 +93,7 @@ public class GridViewCourtAdapter extends BaseAdapter{private Context context;
         customerDB customerDB = new customerDB(context);
         customerList = customerDB.getAllCustomers();
 
-        GridViewCustomerAdapter customerAdapter = new GridViewCustomerAdapter(context, customerList);
+        GridViewCustomerAdapter customerAdapter = new GridViewCustomerAdapter(context, customerList, courtId);
         gridViewCustomer.setAdapter(customerAdapter);
         customerDialog.show();
     }
