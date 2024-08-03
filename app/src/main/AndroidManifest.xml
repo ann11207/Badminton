@@ -18,6 +18,21 @@
         android:theme="@style/Theme.Badminton"
         tools:targetApi="31">
         <activity
+            android:name=".View.Admin.GridViewCustomer"
+            android:exported="false" />
+        <activity
+            android:name=".activity_customer_grid_item"
+            android:exported="false" />
+        <activity
+            android:name=".View.Adapter.GridViewCustomerAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Order"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.dialog_customer_list"
+            android:exported="false" />
+        <activity
             android:name=".View.Admin.AddEditCustomerDialog"
             android:exported="false" />
         <activity

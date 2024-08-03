@@ -1,6 +1,7 @@
 package com.example.badminton.View.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.badminton.Model.CustomerDBModel;
 import com.example.badminton.R;
 import com.example.badminton.View.Admin.ManageCustomer;
+import com.example.badminton.View.Admin.Order;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -72,6 +74,12 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             if (context instanceof ManageCustomer) {
                 ((ManageCustomer) context).deleteCustomer(customer.getId());
             }
+        });
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent openListCustomer = new Intent(context, Order.class);
+            openListCustomer.putExtra("customer_id", customer.getId());
+            context.startActivity(openListCustomer);
         });
     }
 
