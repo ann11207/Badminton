@@ -1,4 +1,4 @@
-package com.example.badminton.View.Admin;
+package com.example.badminton.View.Admin.Setting.Court;
 
 import android.app.Dialog;
 import android.content.Context;

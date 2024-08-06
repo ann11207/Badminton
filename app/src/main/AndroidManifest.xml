@@ -18,7 +18,25 @@
         android:theme="@style/Theme.Badminton"
         tools:targetApi="31">
         <activity
-            android:name=".View.Admin.GridViewCustomer"
+            android:name=".View.Admin.Setting.Bill.layoutBill"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.StatisticalBill.StatisticalBill"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.StatisticalBill.InvoiceStatisticsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.StatisticalBill.item_invoice"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.StatisticalBill.activity_invoice_statistics"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Bill.dialog_bill_info"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Customer.GridViewCustomer"
             android:exported="false" />
         <activity
             android:name=".activity_customer_grid_item"
@@ -30,19 +48,19 @@
             android:name=".View.Admin.Order"
             android:exported="false" />
         <activity
-            android:name=".View.Admin.dialog_customer_list"
+            android:name=".View.Admin.Setting.Customer.dialog_customer_list"
             android:exported="false" />
         <activity
-            android:name=".View.Admin.AddEditCustomerDialog"
+            android:name=".View.Admin.Setting.Account.AddEditCustomerDialog"
             android:exported="false" />
         <activity
-            android:name=".View.Admin.customer_item"
+            android:name=".View.Admin.Setting.Customer.customer_item"
             android:exported="false" />
         <activity
-            android:name=".View.Admin.ManageCustomer"
+            android:name=".View.Admin.Setting.Customer.ManageCustomer"
             android:exported="false" />
         <activity
-            android:name=".View.Admin.AddEditCustomerDialog"
+            android:name=".View.Admin.Setting.Account.AddEditCustomerDialog"
             android:exported="false" />
         <activity
             android:name=".View.Admin.activity_customer_form"
@@ -61,16 +79,16 @@
             android:name=".dialog_customer_select"
             android:exported="false" />
         <activity
-            android:name=".View.Admin.GridViewCourt"
+            android:name=".View.Admin.Setting.Court.GridViewCourt"
             android:exported="false" />
         <activity
-            android:name=".View.Admin.court_item"
+            android:name=".View.Admin.Setting.Court.court_item"
             android:exported="false" />
         <activity
-            android:name=".View.Admin.AddEditCourtDialog"
+            android:name=".View.Admin.Setting.Court.AddEditCourtDialog"
             android:exported="false" />
         <activity
-            android:name=".View.Admin.ManageCourt"
+            android:name=".View.Admin.Setting.Court.ManageCourt"
             android:exported="false" />
         <activity
             android:name=".ManageCourt"
@@ -82,13 +100,13 @@
             android:name=".View.User.InfomationAccountCustomer"
             android:exported="false" />
         <activity
-            android:name=".View.Admin.dialog_info_detail"
+            android:name=".View.Admin.Setting.Account.dialog_info_detail"
             android:exported="false" />
         <activity
-            android:name=".View.Admin.dialog_edit_user"
+            android:name=".View.Admin.Setting.Account.dialog_edit_user"
             android:exported="false" />
         <activity
-            android:name=".View.Admin.Setting"
+            android:name=".View.Admin.Setting.Setting"
             android:exported="false" />
         <activity
             android:name=".View.Admin.test"
@@ -97,7 +115,7 @@
             android:name=".View.Admin.ManageUserAdmin"
             android:exported="false" />
         <activity
-            android:name=".View.Admin.ItemAccountUser"
+            android:name=".View.Admin.Setting.Account.ItemAccountUser"
             android:exported="false" />
         <activity
             android:name=".View.ForgetPassWord.ForgetPass"

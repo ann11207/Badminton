@@ -1,11 +1,9 @@
 package com.example.badminton.View.Admin;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -17,12 +15,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.bumptech.glide.Glide;
-import com.example.badminton.Chart.ChartUtils;
 import com.example.badminton.Model.CourtDBModel;
 import com.example.badminton.Model.Queries.courtDB;
 import com.example.badminton.R;
 import com.example.badminton.View.Adapter.GridViewCourtAdapter;
+import com.example.badminton.View.Admin.Setting.Setting;
 import com.example.badminton.View.Login;
 import com.github.mikephil.charting.charts.BarChart;
 import com.google.firebase.auth.FirebaseAuth;
@@ -64,8 +61,8 @@ public class DashBoardAdmin extends AppCompatActivity {
             @Override
             public void run() {
                 updateDateTime();
-                updateDashboard(); // Cập nhật dữ liệu dashboard
-                handler.postDelayed(this, 1000); // Cập nhật mỗi giây
+                updateDashboard();
+                handler.postDelayed(this, 1000);
             }
         };
 
@@ -73,7 +70,7 @@ public class DashBoardAdmin extends AppCompatActivity {
         textViewRole = findViewById(R.id.textView_role);
         textViewDate = findViewById(R.id.textView_date);
         textViewTime = findViewById(R.id.textView_time);
-        barChart = findViewById(R.id.any_chart_view);
+//        barChart = findViewById(R.id.any_chart_view);
         gridViewCourt = findViewById(R.id.gridView_Court);
         courtDatabase = new courtDB(this);
 
@@ -111,14 +108,14 @@ public class DashBoardAdmin extends AppCompatActivity {
 
     private void updateDashboard() {
         loadCourts();
-        setupChart();
+//        setupChart();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        handler.removeCallbacks(runnable); // Dừng Runnable khi Activity bị hủy
-        Log.d("DashBoardAdmin", "Activity destroyed, Runnable stopped"); // Debug log
+        handler.removeCallbacks(runnable);
+        Log.d("DashBoardAdmin", "Activity destroyed, Runnable stopped");
     }
 
     private void loadCourts() {
@@ -127,16 +124,16 @@ public class DashBoardAdmin extends AppCompatActivity {
         gridViewCourt.setAdapter(gridViewCourtAdapter);
     }
 
-    private void setupChart() {
-        Cursor courtsCursor = courtDatabase.getCourts();
-        if (courtsCursor != null) {
-            try {
-                ChartUtils.setupChart(barChart, courtsCursor);
-            } finally {
-                courtsCursor.close(); // Đảm bảo đóng cursor
-            }
-        }
-    }
+//    private void setupChart() {
+//        Cursor courtsCursor = courtDatabase.getCourts();
+//        if (courtsCursor != null) {
+//            try {
+//                ChartUtils.setupChart(barChart, courtsCursor);
+//            } finally {
+//                courtsCursor.close();
+//            }
+//        }
+//    }
 
     private void loadUserData() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

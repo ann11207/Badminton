@@ -1,4 +1,4 @@
-package com.example.badminton.View.Admin;
+package com.example.badminton.View.Admin.Setting.Bill;
 
 import android.os.Bundle;
 
@@ -10,13 +10,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.badminton.R;
 
-public class ItemAccountUser extends AppCompatActivity {
+public class dialog_bill_info extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_item_account_user);
+        setContentView(R.layout.activity_dialog_bill_info);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);

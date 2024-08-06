@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.Admin.AddEditCustomerDialog"
+    tools:context=".View.Admin.Setting.Account.AddEditCustomerDialog"
     android:orientation="vertical">
     <EditText
         android:id="@+id/editTextName"

@@ -1,4 +1,4 @@
-package com.example.badminton.View.Admin;
+package com.example.badminton.View.Admin.Setting.Account;
 
 import android.os.Bundle;
 
@@ -10,13 +10,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.badminton.R;
 
-public class AddEditCustomerDialog extends AppCompatActivity {
+public class dialog_edit_user extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_add_edit_customer_dialog);
+        setContentView(R.layout.activity_dialog_edit_user);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);

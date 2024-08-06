@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.Admin.Setting.Bill.dialog_bill_info"
+    android:orientation="vertical"
+    android:layout_margin="16dp">
+    <TextView
+        android:layout_margin="16dp"
+        android:id="@+id/textViewCourtName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="Court Name" />
+
+    <TextView
+        android:layout_margin="16dp"
+        android:id="@+id/textViewCustomerName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="Customer Name" />
+
+    <TextView
+        android:layout_margin="16dp"
+        android:id="@+id/textViewTotalPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="Total Price" />
+
+    <TextView
+        android:layout_margin="16dp"
+        android:id="@+id/textViewPlayTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="Play Time (Minutes)" />
+
+    <Button
+        android:id="@+id/buttonConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm" />
+</LinearLayout>

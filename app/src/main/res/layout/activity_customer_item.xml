@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".View.Admin.customer_item"
+    tools:context=".View.Admin.Setting.Customer.customer_item"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"

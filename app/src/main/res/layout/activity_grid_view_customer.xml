@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:context=".View.Admin.GridViewCustomer"
+    tools:context=".View.Admin.Setting.Customer.GridViewCustomer"
     android:orientation="vertical"
     android:layout_gravity="center"
 
@@ -25,5 +25,14 @@
         android:paddingTop="4dp"
         android:text="Customer Name"
         android:textSize="16sp"/>
+    <TextView
+        android:id="@+id/textViewPriceCustomer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:text="Customer Name"
+        android:textSize="16sp"/>
+
 
 </LinearLayout>

@@ -24,6 +24,7 @@ public class bookingDB extends DBHelper {
         return db.insert("Booking", null, values);
     }
 
+
     public BookingDBModel getLatestBookingByCourtId(int courtId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query("Booking", null, "court_id = ?", new String[]{String.valueOf(courtId)}, null, null, "booking_id DESC", "1");

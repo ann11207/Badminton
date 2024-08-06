@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.badminton.Model.CustomerDBModel;
 import com.example.badminton.R;
-import com.example.badminton.View.Admin.ManageCustomer;
+import com.example.badminton.View.Admin.Setting.Customer.ManageCustomer;
 import com.example.badminton.View.Admin.Order;
 
 import java.text.NumberFormat;
@@ -46,18 +46,18 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         NumberFormat numberFormat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
         numberFormat.setGroupingUsed(true);
         String formattedPrice = numberFormat.format(customer.getPrice());
-        // Set thông tin khách hàng
+
         holder.nameTextView.setText(customer.getName());
         holder.priceTextView.setText(formattedPrice + " VND");
 
-        // Giải mã ảnh và thiết lập cho ImageView
+
         if (customer.getImage() != null && customer.getImage().length > 0) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(customer.getImage(), 0, customer.getImage().length);
             if (holder.imageView != null) {
                 holder.imageView.setImageBitmap(bitmap);
             }
         } else {
-            // Xử lý trường hợp ảnh là null hoặc rỗng
+
             if (holder.imageView != null) {
                 holder.imageView.setImageResource(R.drawable.ic_info1);
             }

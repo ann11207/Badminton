@@ -4,7 +4,7 @@
     android:id="@+id/main"
     android:layout_width="650dp"
     android:layout_height="350dp"
-    tools:context=".View.Admin.dialog_customer_list"
+    tools:context=".View.Admin.Setting.Customer.dialog_customer_list"
     android:orientation="vertical"
     android:layout_gravity="center">
     <TextView

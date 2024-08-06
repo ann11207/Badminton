@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".View.Admin.ManageCourt">
+    tools:context=".View.Admin.Setting.Court.ManageCourt">
 
     <LinearLayout
         android:layout_width="match_parent"

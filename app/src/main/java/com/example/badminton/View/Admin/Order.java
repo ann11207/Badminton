@@ -1,29 +1,40 @@
 package com.example.badminton.View.Admin;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.badminton.Controller.PriceCalculator;
+import com.example.badminton.Model.BillDBModel;
 import com.example.badminton.Model.BookingDBModel;
 import com.example.badminton.Model.CourtDBModel;
 import com.example.badminton.Model.CustomerDBModel;
+import com.example.badminton.Model.Queries.billDB;
 import com.example.badminton.Model.Queries.bookingDB;
 import com.example.badminton.Model.Queries.courtDB;
 import com.example.badminton.Model.Queries.customerDB;
 import com.example.badminton.R;
 
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 public class Order extends AppCompatActivity {
 
     private int courtId;
     private int customerId;
+    private double customerPrice;
     private TextView textViewCourtName;
     private TextView textViewCustomerName;
     private TextView textViewTime;
@@ -33,14 +44,13 @@ public class Order extends AppCompatActivity {
     private courtDB courtDB;
     private customerDB customerDB;
     private bookingDB bookingDB;
+    private billDB billDB;
 
     private long startTime;
-    private long endTime;
-    private double price;
-    private Handler handler;
-    private Runnable timerRunnable;
     private long elapsedTime = 0;
     private boolean isTimerRunning = false;
+    private Handler handler;
+    private Runnable timerRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +66,7 @@ public class Order extends AppCompatActivity {
         courtDB = new courtDB(this);
         customerDB = new customerDB(this);
         bookingDB = new bookingDB(this);
+        billDB = new billDB(this);
 
         handler = new Handler(Looper.getMainLooper());
 
@@ -63,6 +74,7 @@ public class Order extends AppCompatActivity {
         if (intent != null) {
             courtId = intent.getIntExtra("court_id", -1);
             customerId = intent.getIntExtra("customer_id", -1);
+            customerPrice = intent.getDoubleExtra("customer_price", 0.0); // Nhận giá từ Intent
         }
 
         if (courtId == -1 || customerId == -1) {
@@ -79,7 +91,7 @@ public class Order extends AppCompatActivity {
         startTime = prefs.getLong("startTime", 0);
         elapsedTime = prefs.getLong("elapsedTime", 0);
         if (startTime > 0) {
-            startTimer(); // Bắt đầu đếm thời gian nếu có thời gian bắt đầu
+            startTimer();
         }
 
         startButton.setOnClickListener(v -> startCourt());
@@ -89,7 +101,6 @@ public class Order extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        // Lưu thời gian khi Activity bị tạm dừng
         getSharedPreferences("OrderPrefs", MODE_PRIVATE).edit()
                 .putLong("startTime", startTime)
                 .putLong("elapsedTime", elapsedTime)
@@ -135,93 +146,152 @@ public class Order extends AppCompatActivity {
 
     private void startCourt() {
         startTime = System.currentTimeMillis();
-        SharedPreferences.Editor editor = getSharedPreferences("OrderPrefs", MODE_PRIVATE).edit();
-        editor.putLong("startTime", startTime);
-        editor.apply();
 
-        long bookingId = bookingDB.createBooking(courtId, customerId, startTime, 0, 0.0);
+        // Tạo đơn đặt sân và lưu thông tin bắt đầu cùng giá tiền
+        long bookingId = bookingDB.createBooking(courtId, customerId, startTime, 0, customerPrice);
         if (bookingId != -1) {
+            SharedPreferences.Editor editor = getSharedPreferences("OrderPrefs", MODE_PRIVATE).edit();
+            editor.putLong("startTime", startTime);
+            editor.putLong("bookingId", bookingId);
+            editor.apply();
+
             CourtDBModel court = courtDB.getCourtById(courtId);
             if (court != null) {
                 courtDB.updateCourtStatus(courtId, "Hoạt động");
                 Toast.makeText(this, "Sân đã được cập nhật trạng thái là 'Hoạt động'", Toast.LENGTH_SHORT).show();
                 startTimer();
             } else {
-                Log.e("OrderActivity", "Court not found with ID: " + courtId);
-                Toast.makeText(this, "Không tìm thấy sân với ID: " + courtId, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Không tìm thấy sân", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Log.e("OrderActivity", "Failed to create booking");
             Toast.makeText(this, "Không thể tạo đơn đặt sân", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void endCourt() {
-        endTime = System.currentTimeMillis();
-        bookingDB bookingHelper = new bookingDB(this);
-        BookingDBModel booking = bookingHelper.getLatestBookingByCourtId(courtId);
-        if (booking != null) {
-            booking.setEndTime(endTime);
-            price = calculatePrice(booking.getStartTime(), endTime);
-            booking.setPrice(price);
-            bookingHelper.updateBooking(booking);
-
-            // Update court status to "Trống"
-            CourtDBModel court = courtDB.getCourtById(courtId);
-            if (court != null) {
-                courtDB.updateCourtStatus(courtId, "Trống");
-                Toast.makeText(this, "Sân đã được cập nhật trạng thái là 'Trống'", Toast.LENGTH_SHORT).show();
-            } else {
-                Log.e("OrderActivity", "Court not found with ID: " + courtId);
-                Toast.makeText(this, "Không tìm thấy sân với ID: " + courtId, Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Log.e("OrderActivity", "No booking found for court ID: " + courtId);
-            Toast.makeText(this, "Không tìm thấy đơn đặt sân cho sân với ID: " + courtId, Toast.LENGTH_SHORT).show();
-        }
-        stopTimer();
-        finish();
     }
 
     private void startTimer() {
         if (isTimerRunning) return;
 
         isTimerRunning = true;
-        handler.post(timerRunnable = new Runnable() {
+
+        timerRunnable = new Runnable() {
             @Override
             public void run() {
-                if (isTimerRunning) {
-                    elapsedTime = System.currentTimeMillis() - startTime;
-                    updateTimeTextView();
-                    handler.postDelayed(this, 1000); // Cập nhật mỗi giây
-                }
+                long currentTime = System.currentTimeMillis();
+                long elapsedMillis = currentTime - startTime;
+                int elapsedSeconds = (int) (elapsedMillis / 1000) % 60;
+                int elapsedMinutes = (int) ((elapsedMillis / (1000 * 60)) % 60);
+                int elapsedHours = (int) ((elapsedMillis / (1000 * 60 * 60)) % 24);
+
+                String timeString = String.format(Locale.getDefault(), "%02d:%02d:%02d", elapsedHours, elapsedMinutes, elapsedSeconds);
+                textViewTime.setText(timeString);
+
+                handler.postDelayed(this, 1000);
             }
-        });
+        };
+
+        handler.post(timerRunnable);
     }
 
     private void stopTimer() {
+        if (!isTimerRunning) return;
+
         isTimerRunning = false;
-        if (timerRunnable != null) {
-            handler.removeCallbacks(timerRunnable);
-        }
+        handler.removeCallbacks(timerRunnable);
     }
 
-    private void updateTimeTextView() {
-        long seconds = (elapsedTime / 1000) % 60;
-        long minutes = (elapsedTime / (1000 * 60)) % 60;
-        long hours = (elapsedTime / (1000 * 60 * 60)) % 24;
+    private void endCourt() {
+        long endTime = System.currentTimeMillis();
+        long playTimeMillis = endTime - startTime;
+        elapsedTime += playTimeMillis;
+        long playTimeMinutes = elapsedTime / (60 * 1000);
 
-        String timeFormatted = String.format("%02d:%02d:%02d", hours, minutes, seconds);
-        textViewTime.setText("Thời gian: " + timeFormatted);
+        stopTimer();
+
+        int startHour = getStartHour(startTime);
+        int endHour = getEndHour(endTime);
+
+        double price = PriceCalculator.calculateTotalPrice(customerPrice, playTimeMinutes, startHour, endHour);
+
+        // Tạo hóa đơn
+        BillDBModel bill = new BillDBModel();
+        bill.setDate(new SimpleDateFormat("dd/MM/yyyy \n HH:mm", Locale.getDefault()).format(new Date()));
+        bill.setCourtId(courtId);
+        bill.setCustomerId(customerId);
+        bill.setTotalPrice(price);
+
+        bill.setPlayTimeMinutes((int) playTimeMinutes);
+
+        // Cập nhật trạng thái sân về "Trống"
+        courtDB.updateCourtStatus(courtId, "Trống");
+
+        // Hiển thị thông tin hóa đơn và reset thời gian
+        showInvoiceDialog(bill);
     }
 
-    private double calculatePrice(long startTime, long endTime) {
-        long duration = endTime - startTime;
-        // Ensure duration is positive
-        if (duration <= 0) {
-            Log.e("OrderActivity", "Invalid duration: " + duration);
-            return 0.0;
-        }
-        return (duration / (1000 * 60 * 60)) * 10.0; // Example rate: 10 per hour
+    private void showInvoiceDialog(BillDBModel bill) {
+        // Tạo thông báo hóa đơn
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        String formattedPrice = numberFormat.format(bill.getTotalPrice());
+
+        String message = String.format(Locale.getDefault(),
+                "Sân: %d\nKhách hàng: %d\nThời gian chơi: %d phút\nTổng giá: %s\nNgày: %s",
+                bill.getCourtId(),
+                bill.getCustomerId(),
+                bill.getPlayTimeMinutes(),
+                formattedPrice,  // Sử dụng định dạng tiền tệ
+                bill.getDate());
+
+        new AlertDialog.Builder(this)
+                .setTitle("Hóa Đơn")
+                .setMessage(message)
+                .setPositiveButton("Lưu", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Lưu hóa đơn vào cơ sở dữ liệu
+                        boolean isBillAdded = billDB.addBill(bill);
+                        if (isBillAdded) {
+                            Toast.makeText(Order.this, "Hóa đơn đã được lưu", Toast.LENGTH_SHORT).show();
+                            resetTimeValues();  // Reset lại các giá trị thời gian sau khi lưu hóa đơn
+                        } else {
+                            Toast.makeText(Order.this, "Không thể lưu hóa đơn", Toast.LENGTH_SHORT).show();
+                        }
+                        dialog.dismiss();
+                        finish();
+                    }
+                })
+                .setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    private void resetTimeValues() {
+        startTime = 0;
+        elapsedTime = 0;
+        isTimerRunning = false;
+        textViewTime.setText("00:00:00");
+
+        // Xóa các giá trị lưu trữ trong SharedPreferences
+        SharedPreferences.Editor editor = getSharedPreferences("OrderPrefs", MODE_PRIVATE).edit();
+        editor.remove("startTime");
+        editor.remove("elapsedTime");
+        editor.remove("bookingId");
+        editor.apply();
+    }
+
+    private int getStartHour(long timeInMillis) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeInMillis);
+        return calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
+    private int getEndHour(long timeInMillis) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timeInMillis);
+        return calendar.get(Calendar.HOUR_OF_DAY);
     }
 }

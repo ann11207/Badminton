@@ -15,17 +15,19 @@ import com.example.badminton.Model.CustomerDBModel;
 import com.example.badminton.R;
 import com.example.badminton.View.Admin.Order;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class GridViewCustomerAdapter extends BaseAdapter {
     private Context context;
     private List<CustomerDBModel> customerList;
-    private int courtId; // Thêm biến này
+    private int courtId;
 
     public GridViewCustomerAdapter(Context context, List<CustomerDBModel> customerList, int courtId) {
         this.context = context;
         this.customerList = customerList;
-        this.courtId = courtId; // Khởi tạo biến này
+        this.courtId = courtId;
     }
 
     @Override
@@ -51,9 +53,13 @@ public class GridViewCustomerAdapter extends BaseAdapter {
 
         ImageView imageView = convertView.findViewById(R.id.imgViewCustomer);
         TextView nameView = convertView.findViewById(R.id.textViewNameCustomer);
-
+        TextView priceView = convertView.findViewById(R.id.textViewPriceCustomer);
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        String formattedPrice = numberFormat.format(customerList.get(position).getPrice());
+        priceView.setText("Price: " + formattedPrice);
         CustomerDBModel customer = customerList.get(position);
         nameView.setText(customer.getName());
+//        priceView.setText("Price: " + customer.getPrice() + " VND");
 
         if (customer.getImage() != null) {
             imageView.setImageBitmap(convertToBitmap(customer.getImage()));
@@ -64,7 +70,8 @@ public class GridViewCustomerAdapter extends BaseAdapter {
         convertView.setOnClickListener(v -> {
             Intent openListCustomer = new Intent(context, Order.class);
             openListCustomer.putExtra("customer_id", customer.getId());
-            openListCustomer.putExtra("court_id", courtId); // Truyền courtId vào Intent
+            openListCustomer.putExtra("court_id", courtId);
+            openListCustomer.putExtra("customer_price", customer.getPrice());
             context.startActivity(openListCustomer);
         });
 
