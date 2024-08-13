@@ -8,7 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.badminton.Model.CourtDBModel;
+import com.example.badminton.Model.CourtSyncModel;
 import com.example.badminton.Model.DBHelper.DBHelper;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,14 @@ public class courtDB extends DBHelper {
         values.put("statusCourt", statusCourt);
         values.put("image", image);
         long result = db.insert("Court", null, values);
-        return result != -1;
+
+        if (result != -1) {
+            CourtDBModel newCourt = new CourtDBModel((int) result, name, statusCourt, image);
+            syncCourtToFirebase(newCourt);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean updateCourt(int id, String name, String statusCourt, byte[] image) {
@@ -35,13 +45,27 @@ public class courtDB extends DBHelper {
         values.put("statusCourt", statusCourt);
         values.put("image", image);
         int result = db.update("Court", values, "id=?", new String[]{String.valueOf(id)});
-        return result > 0;
+        if (result > 0) {
+            CourtDBModel updatedCourt = new CourtDBModel(id, name, statusCourt, image);
+            syncCourtToFirebase(updatedCourt);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean deleteCourt(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         int result = db.delete("Court", "id=?", new String[]{String.valueOf(id)});
-        return result > 0;
+//
+        if (result > 0) {
+            CourtDBModel deletedCourt = new CourtDBModel();
+            syncCourtToFirebase(deletedCourt);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     public Cursor getCourts() {
@@ -103,5 +127,21 @@ public class courtDB extends DBHelper {
         }
 
         return court;
+    }
+    private void syncCourtToFirebase(CourtDBModel court) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("courts");
+
+        // Create a CourtSyncModel instance with the necessary fields
+        CourtSyncModel courtSync = new CourtSyncModel(court.getId(), court.getName(), court.getStatusCourt());
+
+        // Upload to Firebase
+        databaseReference.child(String.valueOf(courtSync.getId())).setValue(courtSync)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d("Firebase", "Court data uploaded successfully");
+                    } else {
+                        Log.e("Firebase", "Failed to upload court data", task.getException());
+                    }
+                });
     }
 }

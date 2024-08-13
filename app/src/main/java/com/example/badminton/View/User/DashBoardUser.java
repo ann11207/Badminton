@@ -16,13 +16,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.badminton.R;
 import com.example.badminton.View.Login;
+import com.example.badminton.View.User.BookingCourt.BookingCourt;
 import com.google.firebase.auth.FirebaseAuth;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class DashBoardUser extends AppCompatActivity {
-    private ImageButton btn_Information, btn_logOut;
+    private ImageButton btn_Information, btn_logOut, btn_Booking;
     private ImageView dashBoard_avatar;
     private TextView textViewName;
 
@@ -57,6 +58,14 @@ public class DashBoardUser extends AppCompatActivity {
             }
         });
 
+        btn_Booking = findViewById(R.id.dashBoardUser_Booking);
+        btn_Booking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentOpenBooking = new Intent(getApplicationContext(), BookingCourt.class);
+                startActivity(intentOpenBooking);
+                }
+        });
         dashBoard_avatar = findViewById(R.id.dashBoard_avatar);
         textViewName = findViewById(R.id.textViewName);
         loadUserData();

@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Badminton"
         tools:targetApi="31">
         <activity
+            android:name=".View.User.BookingCourt.BookingCourt"
+            android:exported="false" />
+        <activity
             android:name=".View.Admin.Setting.billbydateTest.testbillbydate"
             android:exported="false" />
         <activity

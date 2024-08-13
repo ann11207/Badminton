@@ -23,6 +23,8 @@ import com.example.badminton.Model.Queries.bookingDB;
 import com.example.badminton.Model.Queries.courtDB;
 import com.example.badminton.Model.Queries.customerDB;
 import com.example.badminton.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -157,8 +159,19 @@ public class Order extends AppCompatActivity {
 
             CourtDBModel court = courtDB.getCourtById(courtId);
             if (court != null) {
+                // Cập nhật trạng thái sân trong cơ sở dữ liệu cục bộ
                 courtDB.updateCourtStatus(courtId, "Hoạt động");
-                Toast.makeText(this, "Sân đã được cập nhật trạng thái là 'Hoạt động'", Toast.LENGTH_SHORT).show();
+
+
+                DatabaseReference courtRef = FirebaseDatabase.getInstance().getReference("courts").child(String.valueOf(courtId));
+                courtRef.child("statusCourt").setValue("Hoạt động").addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(this, "Sân đã được cập nhật trạng thái là 'Hoạt động' trong Firebase", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "Cập nhật trạng thái sân thất bại trong Firebase", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 startTimer();
             } else {
                 Toast.makeText(this, "Không tìm thấy sân", Toast.LENGTH_SHORT).show();
@@ -214,19 +227,28 @@ public class Order extends AppCompatActivity {
 
         // Tạo hóa đơn
         BillDBModel bill = new BillDBModel();
-        bill.setDate(new SimpleDateFormat("dd/MM/yyyy ", Locale.getDefault()).format(new Date()));
+        bill.setDate(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date()));
         bill.setCourtId(courtId);
         bill.setCustomerId(customerId);
         bill.setTotalPrice(price);
-
         bill.setPlayTimeMinutes((int) playTimeMinutes);
 
-
         courtDB.updateCourtStatus(courtId, "Trống");
+
+        // Cập nhật trạng thái sân trong Firebase
+        DatabaseReference courtRef = FirebaseDatabase.getInstance().getReference("courts").child(String.valueOf(courtId));
+        courtRef.child("statusCourt").setValue("Trống").addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(Order.this, "Sân đã được cập nhật trạng thái là 'Trống' trong Firebase", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(Order.this, "Cập nhật trạng thái sân thất bại trong Firebase", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // Hiển thị thông tin hóa đơn và reset thời gian
         showInvoiceDialog(bill);
     }
+
 
     private void showInvoiceDialog(BillDBModel bill) {
         // Tạo thông báo hóa đơn
@@ -250,8 +272,13 @@ public class Order extends AppCompatActivity {
                         // Lưu hóa đơn vào cơ sở dữ liệu
                         boolean isBillAdded = billDB.addBill(bill);
                         if (isBillAdded) {
-                            Toast.makeText(Order.this, "Hóa đơn đã được lưu", Toast.LENGTH_SHORT).show();
-                            resetTimeValues();  // Reset lại các giá trị thời gian sau khi lưu hóa đơn
+                            // Cập nhật trạng thái sân thành "Trống" trong Firebase
+                            courtDB.updateCourtStatus(courtId, "Trống");
+
+                            // Xóa thời gian lưu trong SharedPreferences
+                            resetTimeValues();
+
+                            Toast.makeText(Order.this, "Hóa đơn đã được lưu và sân đã được cập nhật trạng thái", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(Order.this, "Không thể lưu hóa đơn", Toast.LENGTH_SHORT).show();
                         }

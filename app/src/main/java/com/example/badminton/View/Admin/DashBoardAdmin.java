@@ -124,16 +124,6 @@ public class DashBoardAdmin extends AppCompatActivity {
         gridViewCourt.setAdapter(gridViewCourtAdapter);
     }
 
-//    private void setupChart() {
-//        Cursor courtsCursor = courtDatabase.getCourts();
-//        if (courtsCursor != null) {
-//            try {
-//                ChartUtils.setupChart(barChart, courtsCursor);
-//            } finally {
-//                courtsCursor.close();
-//            }
-//        }
-//    }
 
     private void loadUserData() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
