@@ -13,7 +13,7 @@ public class PriceCalculator {
         }
 
 
-        return Math.max(totalPrice, 0);// ko âm
+        return Math.max(totalPrice, 0);
     }
 
     private static boolean isWithinDiscountPeriod(int startHour, int endHour) {

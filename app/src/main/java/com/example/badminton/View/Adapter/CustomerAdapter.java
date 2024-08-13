@@ -63,7 +63,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             }
         }
 
-        // Thiết lập sự kiện click cho các nút
+
         holder.editButton.setOnClickListener(v -> {
             if (context instanceof ManageCustomer) {
                 ((ManageCustomer) context).showEditCustomerDialog(customer);

@@ -44,8 +44,8 @@ public class AddEditCourtDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_court_dialog);
         WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.width = WindowManager.LayoutParams.MATCH_PARENT; // hoặc giá trị cụ thể
-        params.height = WindowManager.LayoutParams.WRAP_CONTENT; // hoặc giá trị cụ thể
+        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
         getWindow().setAttributes(params);
         edtName = findViewById(R.id.edt_name);
 //        edtStatus = findViewById(R.id.edt_status);

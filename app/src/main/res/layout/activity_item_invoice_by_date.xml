@@ -3,34 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:context=".View.Admin.Setting.StatisticalBill.item_invoice">
-
+    tools:context=".item_invoice_by_date"
+    android:orientation="vertical">
     <TextView
-        android:id="@+id/textViewInvoiceCourt"
+        android:id="@+id/textViewInvoiceCourtByDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sân: "
         android:textSize="16sp"/>
 
     <TextView
-        android:id="@+id/textViewInvoiceTotalPrice"
+        android:id="@+id/textViewInvoiceTotalPriceByDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tổng giá: "
         android:textSize="16sp"/>
 
     <TextView
-        android:id="@+id/textViewInvoicePlayTime"
+        android:id="@+id/textViewInvoicePlayTimeByDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Thời gian chơi: "
         android:textSize="16sp"/>
 
     <TextView
-        android:id="@+id/textViewInvoiceDate"
+        android:id="@+id/textViewInvoiceDateByDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ngày: "

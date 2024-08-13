@@ -125,7 +125,7 @@ public class SignUp extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), Login.class));
                         finish();
                     } else {
-                        Toast.makeText(SignUp.this, "User creation failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignUp.this, "tạo lỗi", Toast.LENGTH_SHORT).show();
                     }
                 }
             }).addOnFailureListener(e -> {

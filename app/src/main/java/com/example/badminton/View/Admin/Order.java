@@ -74,7 +74,7 @@ public class Order extends AppCompatActivity {
         if (intent != null) {
             courtId = intent.getIntExtra("court_id", -1);
             customerId = intent.getIntExtra("customer_id", -1);
-            customerPrice = intent.getDoubleExtra("customer_price", 0.0); // Nhận giá từ Intent
+            customerPrice = intent.getDoubleExtra("customer_price", 0.0);
         }
 
         if (courtId == -1 || customerId == -1) {
@@ -214,14 +214,14 @@ public class Order extends AppCompatActivity {
 
         // Tạo hóa đơn
         BillDBModel bill = new BillDBModel();
-        bill.setDate(new SimpleDateFormat("dd/MM/yyyy \n HH:mm", Locale.getDefault()).format(new Date()));
+        bill.setDate(new SimpleDateFormat("dd/MM/yyyy ", Locale.getDefault()).format(new Date()));
         bill.setCourtId(courtId);
         bill.setCustomerId(customerId);
         bill.setTotalPrice(price);
 
         bill.setPlayTimeMinutes((int) playTimeMinutes);
 
-        // Cập nhật trạng thái sân về "Trống"
+
         courtDB.updateCourtStatus(courtId, "Trống");
 
         // Hiển thị thông tin hóa đơn và reset thời gian
@@ -238,7 +238,7 @@ public class Order extends AppCompatActivity {
                 bill.getCourtId(),
                 bill.getCustomerId(),
                 bill.getPlayTimeMinutes(),
-                formattedPrice,  // Sử dụng định dạng tiền tệ
+                formattedPrice,
                 bill.getDate());
 
         new AlertDialog.Builder(this)

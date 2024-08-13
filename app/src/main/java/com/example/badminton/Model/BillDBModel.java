@@ -1,5 +1,8 @@
 package com.example.badminton.Model;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class BillDBModel {
     private int billId;
     private int courtId;
@@ -81,5 +84,17 @@ public class BillDBModel {
         public void setPlayTimeMinutes(int playTimeMinutes) {
             this.playTimeMinutes = playTimeMinutes;
         }
+
+    @Override
+    public String toString() {
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        String formattedTotalPrice = currencyFormat.format(totalPrice);
+
+        return "===== Hoá đơn" + billId +" ====="+ "\n" +
+                "Sân: " + courtId + "\n" +
+                "Thời gian chơi: " + playTimeMinutes + " phút\n" +
+                "Ngày: " + date + "\n" +
+                "Tổng tiền: " + formattedTotalPrice;
+    }
     }
 

@@ -1,10 +1,9 @@
 package com.example.badminton.View.Admin.Setting.StatisticalBill;
 
-import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -20,28 +19,29 @@ import com.example.badminton.Model.BillDBModel;
 import com.example.badminton.Model.Queries.billDB;
 import com.example.badminton.R;
 import com.example.badminton.View.Adapter.InvoiceAdapter;
+import com.example.badminton.View.Admin.Setting.billbydateTest.testbillbydate;
 import com.github.mikephil.charting.charts.BarChart;
 
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class StatisticalBill extends AppCompatActivity {
     private TextView textViewDate;
-    private TextView textViewStatistics, textViewTotalCustomers, textViewTotalRevenue;
+    private TextView textViewTotalCustomers, textViewTotalRevenue;
     private Button buttonPickDate;
-    private Button buttonLoadData; // Button for loading data by date
-    private Button buttonLoadAllData; // New button for loading all data
-    private RecyclerView recyclerViewInvoices;
+    private Button buttonLoadData;
+    private Button buttonLoadAllData;
+    private RecyclerView recyclerViewInvoices, recyclerViewInvoicesByDate;
     private InvoiceAdapter invoiceAdapter;
+
+
     private List<BillDBModel> invoiceList = new ArrayList<>();
     private billDB billDB;
     private BarChart barChart;
-    private Date selectedDate; // Store the selected date
+    private Date selectedDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,79 +54,44 @@ public class StatisticalBill extends AppCompatActivity {
             return insets;
         });
 
-        textViewDate = findViewById(R.id.textViewDate);
-        textViewStatistics = findViewById(R.id.textViewStatistics);
-        buttonPickDate = findViewById(R.id.buttonPickDate);
+        // Khởi tạo các thành phần giao diện
+
+
         buttonLoadData = findViewById(R.id.buttonLoadData);
-        buttonLoadAllData = findViewById(R.id.buttonLoadAllData); // Initialize the new button
+        buttonLoadAllData = findViewById(R.id.buttonLoadAllData);
         textViewTotalCustomers = findViewById(R.id.textViewTotalCustomers);
         textViewTotalRevenue = findViewById(R.id.textViewTotalRevenue);
         recyclerViewInvoices = findViewById(R.id.recyclerViewInvoices);
+
         barChart = findViewById(R.id.barChart);
 
         billDB = new billDB(this);
 
+        // Thiết lập RecyclerView
+
         recyclerViewInvoices.setLayoutManager(new LinearLayoutManager(this));
+
+
         invoiceAdapter = new InvoiceAdapter(invoiceList);
         recyclerViewInvoices.setAdapter(invoiceAdapter);
 
-        buttonPickDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog();
-            }
-        });
+        // Cài đặt sự kiện cho các nút
 
         buttonLoadData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selectedDate != null) {
-                    loadInvoicesByDate(selectedDate);
-                } else {
-                    textViewTotalCustomers.setText("Vui lòng chọn ngày trước");
-                    textViewTotalRevenue.setText("");
-                }
+                Intent openTestBill = new Intent(StatisticalBill.this, testbillbydate.class);
+                startActivity(openTestBill);
             }
         });
 
-        buttonLoadAllData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadAllInvoices();
-            }
-        });
 
-        // Initialize with the current date
-        selectedDate = new Date();
-        loadInvoicesByDate(selectedDate);
+        buttonLoadAllData.setOnClickListener(v -> loadAllInvoices());
+
+
         BarChartRevenue.updateBarChart(invoiceList, barChart);
     }
 
-    private void showDatePickerDialog() {
-        final Calendar calendar = Calendar.getInstance();
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                calendar.set(year, month, dayOfMonth);
-                selectedDate = calendar.getTime();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                textViewDate.setText("Ngày: " + dateFormat.format(selectedDate));
-                loadInvoicesByDate(selectedDate);
-            }
-        },
-                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-        datePickerDialog.show();
-    }
-
-    private void loadInvoicesByDate(Date date) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String dateString = dateFormat.format(date);
-        invoiceList.clear();
-        invoiceList.addAll(billDB.getBillsByDate(dateString));
-        invoiceAdapter.notifyDataSetChanged();
-
-        updateStatistics();
-    }
 
     private void loadAllInvoices() {
         invoiceList.clear();

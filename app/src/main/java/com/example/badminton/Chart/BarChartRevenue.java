@@ -8,7 +8,9 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import com.example.badminton.Model.BillDBModel;
 
 public class BarChartRevenue {
@@ -17,11 +19,27 @@ public class BarChartRevenue {
         List<BarEntry> entries = new ArrayList<>();
         List<String> labels = new ArrayList<>();
 
+        // Map để lưu tổng doanh thu theo ngày
+        Map<String, Double> revenueByDate = new HashMap<>();
 
-        int start = Math.max(0, invoiceList.size() - 3);
-        for (int i = start; i < invoiceList.size(); i++) {
-            labels.add(invoiceList.get(i).getDate());
-            entries.add(new BarEntry(i - start, (float) invoiceList.get(i).getTotalPrice()));
+        // Tính tổng doanh thu cho từng ngày
+        for (BillDBModel bill : invoiceList) {
+            String date = bill.getDate(); // Định dạng ngày của bạn có thể cần điều chỉnh
+            double totalPrice = bill.getTotalPrice();
+            revenueByDate.put(date, revenueByDate.getOrDefault(date, 0.0) + totalPrice);
+        }
+
+        // Lấy các ngày và tổng doanh thu, sắp xếp theo thứ tự
+        List<String> sortedDates = new ArrayList<>(revenueByDate.keySet());
+        sortedDates.sort((d1, d2) -> d2.compareTo(d1)); // Sắp xếp ngày từ mới nhất đến cũ nhất
+
+        // Chỉ lấy 3 ngày gần nhất
+        int start = Math.max(0, sortedDates.size() - 3);
+        for (int i = start; i < sortedDates.size(); i++) {
+            String date = sortedDates.get(i);
+            labels.add(date);
+            // Explicitly convert Double to float
+            entries.add(new BarEntry(i - start, revenueByDate.get(date).floatValue()));
         }
 
         BarDataSet dataSet = new BarDataSet(entries, "Tổng doanh thu");

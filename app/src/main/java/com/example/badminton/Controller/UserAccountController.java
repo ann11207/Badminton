@@ -84,7 +84,7 @@ public class UserAccountController {
                             .addOnFailureListener(failureListener))
                     .addOnFailureListener(failureListener);
         } else {
-            failureListener.onFailure(new Exception("Current user is not logged in"));
+            failureListener.onFailure(new Exception("usẻ chưa đăng nhập"));
         }
     }
 }

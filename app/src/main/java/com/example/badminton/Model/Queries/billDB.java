@@ -38,7 +38,7 @@ public class billDB extends DBHelper {
     }
 
 
-    // Lấy tất cả hóa đơn
+
     public List<BillDBModel> getAllBills() {
         List<BillDBModel> billList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -87,7 +87,9 @@ public class billDB extends DBHelper {
     public List<BillDBModel> getBillsByDate(String date) {
         List<BillDBModel> billList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM Bill WHERE date = ?", new String[]{date});
+
+        // Sử dụng LIKE để so sánh ngày mà không quan tâm đến giờ
+        Cursor cursor = db.rawQuery("SELECT * FROM Bill WHERE date LIKE ?", new String[]{date + "%"});
 
         if (cursor.moveToFirst()) {
             do {
@@ -106,4 +108,7 @@ public class billDB extends DBHelper {
         db.close();
         return billList;
     }
+
+
+
 }

@@ -8,7 +8,7 @@ public class BookingDBModel {
     private long endTime;
     private double price;
 
-    // Getter và Setter cho bookingId
+
     public int getBookingId() {
         return bookingId;
     }
@@ -17,7 +17,7 @@ public class BookingDBModel {
         this.bookingId = bookingId;
     }
 
-    // Getter và Setter cho courtId
+
     public int getCourtId() {
         return courtId;
     }
@@ -26,7 +26,7 @@ public class BookingDBModel {
         this.courtId = courtId;
     }
 
-    // Getter và Setter cho customerId
+
     public int getCustomerId() {
         return customerId;
     }
@@ -35,7 +35,7 @@ public class BookingDBModel {
         this.customerId = customerId;
     }
 
-    // Getter và Setter cho startTime
+
     public long getStartTime() {
         return startTime;
     }
@@ -44,7 +44,7 @@ public class BookingDBModel {
         this.startTime = startTime;
     }
 
-    // Getter và Setter cho endTime
+
     public long getEndTime() {
         return endTime;
     }
@@ -53,7 +53,7 @@ public class BookingDBModel {
         this.endTime = endTime;
     }
 
-    // Getter và Setter cho price
+
     public double getPrice() {
         return price;
     }
