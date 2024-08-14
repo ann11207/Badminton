@@ -1,11 +1,14 @@
 package com.example.badminton.View.Admin;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +19,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.badminton.Model.CourtDBModel;
+import com.example.badminton.Model.CourtSyncModel;
 import com.example.badminton.Model.Queries.courtDB;
 import com.example.badminton.R;
 import com.example.badminton.View.Adapter.GridViewCourtAdapter;
@@ -44,12 +48,17 @@ public class DashBoardAdmin extends AppCompatActivity {
     private TextView textViewName, textViewRole, textViewDate, textViewTime;
     private Handler handler;
     private Runnable runnable;
+    private TableLayout tableLayout;
+    private final int START_HOUR = 0;
+    private final int END_HOUR = 23;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_dash_board_admin);
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -70,12 +79,13 @@ public class DashBoardAdmin extends AppCompatActivity {
         textViewRole = findViewById(R.id.textView_role);
         textViewDate = findViewById(R.id.textView_date);
         textViewTime = findViewById(R.id.textView_time);
-//        barChart = findViewById(R.id.any_chart_view);
+
         gridViewCourt = findViewById(R.id.gridView_Court);
         courtDatabase = new courtDB(this);
 
         btnSetting = findViewById(R.id.Setting);
         btnLogout = findViewById(R.id.btn_Logout);
+        tableLayout = findViewById(R.id.tableLayout);
 
         btnSetting.setOnClickListener(v -> {
             Intent intentOpenSettingDetail = new Intent(DashBoardAdmin.this, Setting.class);
@@ -91,6 +101,7 @@ public class DashBoardAdmin extends AppCompatActivity {
 
         loadUserData();
         handler.post(runnable);
+
     }
 
     private void updateDateTime() {
@@ -108,7 +119,7 @@ public class DashBoardAdmin extends AppCompatActivity {
 
     private void updateDashboard() {
         loadCourts();
-//        setupChart();
+
     }
 
     @Override
@@ -149,4 +160,6 @@ public class DashBoardAdmin extends AppCompatActivity {
                     });
         }
     }
+
 }
+

@@ -116,7 +116,6 @@
         android:layout_height="0dp"
         android:layout_weight="4"
         android:weightSum="4"
-        android:background="#87BCE6"
         android:orientation="horizontal">
 
 
@@ -124,19 +123,34 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
-            android:background="@drawable/grantchart"
+
             android:orientation="vertical">
 
-<!--<com.anychart.AnyChartView-->
-<!--    android:id="@+id/any_chart_view"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent">-->
-<!--</com.anychart.AnyChartView>-->
+<!--            <ScrollView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent">-->
 
-<!--            <com.github.mikephil.charting.charts.HorizontalBarChart-->
-<!--                            android:id="@+id/any_chart_view"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="match_parent"/>-->
+<!--                <HorizontalScrollView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content">-->
+
+<!--                    <TableLayout-->
+<!--                        android:id="@+id/tableLayout"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:stretchColumns="*">-->
+
+
+<!--                    </TableLayout>-->
+
+<!--                </HorizontalScrollView>-->
+<!--            </ScrollView>-->
+            <TableLayout
+                android:id="@+id/tableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*"
+                android:paddingTop="20dp"/>
 
         </LinearLayout>
 
