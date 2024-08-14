@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -16,10 +18,113 @@
         android:theme="@style/Theme.Badminton"
         tools:targetApi="31">
         <activity
-            android:name=".View.Admin.dialog_edit_user"
+            android:name=".View.User.BookingCourt.DialogConfirmation"
             android:exported="false" />
         <activity
-            android:name=".View.Admin.Setting"
+            android:name=".View.User.BookingCourt.BookingCourt"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.billbydateTest.testbillbydate"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.billbydateTest.billBydate"
+            android:exported="false" />
+        <activity
+            android:name=".item_invoice_by_date"
+            android:exported="false" />
+        <activity
+            android:name=".View.Adapter.item_bill"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Bill.layoutBill"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.StatisticalBill.StatisticalBill"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.StatisticalBill.InvoiceStatisticsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.StatisticalBill.item_invoice"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.StatisticalBill.activity_invoice_statistics"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Bill.dialog_bill_info"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Customer.GridViewCustomer"
+            android:exported="false" />
+        <activity
+            android:name=".activity_customer_grid_item"
+            android:exported="false" />
+        <activity
+            android:name=".View.Adapter.GridViewCustomerAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Order"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Customer.dialog_customer_list"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Account.AddEditCustomerDialog"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Customer.customer_item"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Customer.ManageCustomer"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Account.AddEditCustomerDialog"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.activity_customer_form"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.item_customer"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.dialog_select_customer"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.dialog_customer_select"
+            android:exported="false"
+            android:theme="@style/Theme.Badminton" />
+        <activity
+            android:name=".dialog_customer_select"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Court.GridViewCourt"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Court.court_item"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Court.AddEditCourtDialog"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Court.ManageCourt"
+            android:exported="false" />
+        <activity
+            android:name=".ManageCourt"
+            android:exported="false" />
+        <activity
+            android:name=".View.User.test"
+            android:exported="false" />
+        <activity
+            android:name=".View.User.InfomationAccountCustomer"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Account.dialog_info_detail"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Account.dialog_edit_user"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Setting"
             android:exported="false" />
         <activity
             android:name=".View.Admin.test"
@@ -28,7 +133,7 @@
             android:name=".View.Admin.ManageUserAdmin"
             android:exported="false" />
         <activity
-            android:name=".View.Admin.ItemAccountUser"
+            android:name=".View.Admin.Setting.Account.ItemAccountUser"
             android:exported="false" />
         <activity
             android:name=".View.ForgetPassWord.ForgetPass"

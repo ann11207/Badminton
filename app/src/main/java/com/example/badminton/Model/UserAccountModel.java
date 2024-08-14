@@ -4,6 +4,16 @@ public class UserAccountModel {
 
 
     private String id;
+    private String avatar;
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
     private String nameAccount;
     private String name;
     private String role;
@@ -22,7 +32,7 @@ public class UserAccountModel {
     public UserAccountModel() {
     }
 
-    // Constructor có tham số
+
     public UserAccountModel(String id, String name, String role) {
         this.id = id;
         this.nameAccount = name;

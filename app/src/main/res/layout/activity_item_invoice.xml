@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    tools:context=".View.Admin.Setting.StatisticalBill.item_invoice">
+
+    <TextView
+        android:id="@+id/textViewInvoiceCourt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sân: "
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/textViewInvoiceTotalPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tổng giá: "
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/textViewInvoicePlayTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thời gian chơi: "
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/textViewInvoiceDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ngày: "
+        android:textSize="16sp"/>
+</LinearLayout>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.Admin.Setting.Account.dialog_info_detail"
+    android:orientation="vertical">
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Thông tin"
+    android:textSize="30sp"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:layout_margin="10dp">
+</TextView>
+
+    <ImageView
+        android:id="@+id/detailInfo_avatar"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@android:drawable/ic_menu_camera"
+        android:layout_gravity="center">
+    </ImageView>
+
+    <LinearLayout
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Họ và tên : "
+            android:textSize="25sp"
+            android:fontFamily="sans-serif-medium">
+        </TextView>
+        <TextView
+            android:id="@+id/detailInfo_fullName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="Họ và tên : "
+            android:textSize="25sp">
+        </TextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email : "
+            android:textSize="25sp"
+            android:fontFamily="sans-serif-medium">
+        </TextView>
+        <TextView
+            android:id="@+id/detailInfo_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textSize="25sp"
+            android:layout_marginLeft="36dp">
+        </TextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số điện thoại : "
+            android:textSize="25sp"
+            android:fontFamily="sans-serif-medium">
+        </TextView>
+        <TextView
+            android:id="@+id/detailInfo_phoneNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="Họ và tên : "
+            android:textSize="25sp">
+        </TextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loại tài khoản : "
+            android:textSize="25sp"
+            android:fontFamily="sans-serif-medium">
+        </TextView>
+        <TextView
+            android:id="@+id/detailInfot_role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="Loại tài khoản : "
+            android:textSize="25sp">
+        </TextView>
+
+    </LinearLayout>
+</LinearLayout>

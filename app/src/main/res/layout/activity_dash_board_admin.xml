@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="#2C3F6F"
         android:orientation="horizontal">
 
         <!-- Bên trái -->
@@ -21,24 +22,77 @@
             android:layout_weight="2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="#2196F3"
-            android:orientation="vertical">
-            <View
+            android:orientation="horizontal">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2">
+                <LinearLayout
+
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="2">
+
+                    <TextView
+
+                        android:id="@+id/textView_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:text="123"
+                        android:textColor="@color/white"
+                        android:layout_margin="10dp"
+                        android:textSize="20sp">
+                    </TextView>
+                    <TextView
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:id="@+id/textView_role"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="123"
+                        android:textColor="@color/white"
+                        android:textSize="20sp">
+                    </TextView>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
         <!-- Ở giữa -->
         <LinearLayout
-            android:layout_weight="0.5"
+            android:layout_weight="2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:gravity="center">
-            <ImageView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:src="@drawable/background"
-                android:background="#2196F3"/>
+            <TextView
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:id="@+id/textView_time"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textSize="20sp">
+            </TextView>
+            <TextView
+                android:textColor="@color/white"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:id="@+id/textView_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textSize="20sp">
+            </TextView>
+
         </LinearLayout>
 
         <!-- Bên phải -->
@@ -46,10 +100,13 @@
             android:layout_weight="2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="#2196F3">
-            <View
+            android:background="#2C3F6F">
+            <ImageView
+                android:layout_gravity="end"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="150dp"
+                android:src="@drawable/goodminton" />
+
         </LinearLayout>
     </LinearLayout>
 
@@ -59,114 +116,55 @@
         android:layout_height="0dp"
         android:layout_weight="4"
         android:weightSum="4"
-        android:background="#87BCE6"
         android:orientation="horizontal">
 
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#009688"
+            android:layout_weight="2"
+
             android:orientation="vertical">
-           <Button
-               android:layout_margin="20dp"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="Co dinh">
-           </Button>
-            <Button
-                android:layout_margin="20dp"
-                android:layout_width="wrap_content"
+
+<!--            <ScrollView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent">-->
+
+<!--                <HorizontalScrollView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content">-->
+
+<!--                    <TableLayout-->
+<!--                        android:id="@+id/tableLayout"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:stretchColumns="*">-->
+
+
+<!--                    </TableLayout>-->
+
+<!--                </HorizontalScrollView>-->
+<!--            </ScrollView>-->
+            <TableLayout
+                android:id="@+id/tableLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Vangx lai">
-            </Button>
-            <Button
-                android:layout_margin="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="may lanh co dinh">
-            </Button>
-            <Button
-                android:layout_margin="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="may lanh vang lai">
-            </Button>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#FFEB3B"
-            android:orientation="vertical">
-            <Button
-                android:layout_margin="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Snack">
-            </Button>
-            <Button
-                android:layout_margin="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Revie">
-            </Button>
-            <Button
-                android:layout_margin="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sting">
-            </Button>
-            <Button
-                android:layout_margin="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="C2">
-            </Button>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#9C27B0"
-            android:orientation="vertical">
-            <Button
-                android:layout_margin="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cầu hepas">
-            </Button>
-            <Button
-                android:layout_margin="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cuoc yonex">
-            </Button>
-            <Button
-                android:layout_margin="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" cầu vina">
-            </Button>
-            <Button
-                android:layout_margin="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="cầu bình minh">
-            </Button>
+                android:stretchColumns="*"
+                android:paddingTop="20dp"/>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#FF5722">
+            android:layout_weight="2"
+            android:background="#FFFFFF">
 
             <GridView
+                android:id="@+id/gridView_Court"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:numColumns="2">
-
+                android:numColumns="3">
             </GridView>
         </LinearLayout>
 
@@ -177,31 +175,38 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal"
-        android:background="#BEEF85">
+        android:background="#2C3F6F"
+        android:orientation="horizontal">
         <!-- Nút Logout -->
         <Button
+            android:id="@+id/btn_Logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_Logout"
-            android:text="Log out" >
+            android:text="Log out">
+
         </Button>
+
         <Button
             android:id="@+id/Setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Setting">
+
         </Button>
+
         <Button
             android:id="@+id/History"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="History">
+
         </Button>
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Total in day">
+
         </Button>
 
 

@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:importantForAccessibility="no"
-            android:src="@drawable/background">
+            android:src="@drawable/logo_goodminton">
 
         </ImageView>
     </LinearLayout>
@@ -44,29 +44,7 @@
 
         </TextView>
 
-        <!--        <EditText-->
-        <!--            android:id="@+id/edt_nameAccount"-->
-        <!--            android:layout_width="350dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_gravity="center"-->
-        <!--            android:layout_marginTop="50dp"-->
-        <!--            android:layout_marginBottom="20dp"-->
-        <!--            android:background="@drawable/input"-->
-        <!--            android:hint="@string/input_account"-->
-        <!--            android:paddingLeft="20dp"-->
-        <!--            android:textSize="30sp" />-->
 
-        <!--        <EditText-->
-        <!--            android:id="@+id/edt_passWord"-->
-        <!--            android:layout_width="350dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_gravity="center"-->
-        <!--            android:layout_margin="20dp"-->
-        <!--            android:layout_marginTop="50dp"-->
-        <!--            android:background="@drawable/input"-->
-        <!--            android:hint="@string/input_password"-->
-        <!--            android:paddingLeft="20dp"-->
-        <!--            android:textSize="30sp"/>-->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/edtLogin_email"
             android:layout_width="wrap_content"
@@ -156,7 +134,8 @@
             android:src="@drawable/icgit"
             android:layout_weight="1"  />
             <View android:layout_width="140dp"
-                android:layout_height="match_parent">  </View>
+                android:layout_height="match_parent">
+            </View>
         </LinearLayout>
 
         <TextView
