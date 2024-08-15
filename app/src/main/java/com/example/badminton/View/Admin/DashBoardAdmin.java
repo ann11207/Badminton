@@ -1,37 +1,45 @@
 package com.example.badminton.View.Admin;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.badminton.Model.BookingCourtSync;
 import com.example.badminton.Model.CourtDBModel;
-import com.example.badminton.Model.CourtSyncModel;
 import com.example.badminton.Model.Queries.courtDB;
 import com.example.badminton.R;
 import com.example.badminton.View.Adapter.GridViewCourtAdapter;
+import com.example.badminton.View.Adapter.TimeSlotAdapter;
 import com.example.badminton.View.Admin.Setting.Setting;
 import com.example.badminton.View.Login;
 import com.github.mikephil.charting.charts.BarChart;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -51,13 +59,16 @@ public class DashBoardAdmin extends AppCompatActivity {
     private TableLayout tableLayout;
     private final int START_HOUR = 0;
     private final int END_HOUR = 23;
+    private RecyclerView recyclerViewTimeSlots;
+    private TimeSlotAdapter timeSlotAdapter;
+    private List<BookingCourtSync> bookingList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_dash_board_admin);
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -80,12 +91,18 @@ public class DashBoardAdmin extends AppCompatActivity {
         textViewDate = findViewById(R.id.textView_date);
         textViewTime = findViewById(R.id.textView_time);
 
+        recyclerViewTimeSlots = findViewById(R.id.recyclerViewTimeSlots);
+        recyclerViewTimeSlots.setLayoutManager(new LinearLayoutManager(this));
+
+        bookingList = new ArrayList<>();
+         timeSlotAdapter = new TimeSlotAdapter(bookingList);
+        recyclerViewTimeSlots.setAdapter(timeSlotAdapter);
+
         gridViewCourt = findViewById(R.id.gridView_Court);
         courtDatabase = new courtDB(this);
 
         btnSetting = findViewById(R.id.Setting);
         btnLogout = findViewById(R.id.btn_Logout);
-        tableLayout = findViewById(R.id.tableLayout);
 
         btnSetting.setOnClickListener(v -> {
             Intent intentOpenSettingDetail = new Intent(DashBoardAdmin.this, Setting.class);
@@ -101,7 +118,7 @@ public class DashBoardAdmin extends AppCompatActivity {
 
         loadUserData();
         handler.post(runnable);
-
+        loadTimeSlotsFromFirebase();
     }
 
     private void updateDateTime() {
@@ -111,7 +128,7 @@ public class DashBoardAdmin extends AppCompatActivity {
         String currentDateTime = dateFormat.format(new Date());
         String currentTime = timeFormat.format(new Date());
 
-        Log.d("DashBoardAdmin", "Date: " + currentDateTime + " Time: " + currentTime); // Debug log
+        Log.d("DashBoardAdmin", "Date: " + currentDateTime + " Time: " + currentTime);
 
         textViewDate.setText(currentDateTime);
         textViewTime.setText(currentTime);
@@ -159,6 +176,25 @@ public class DashBoardAdmin extends AppCompatActivity {
                         Toast.makeText(this, "Lỗi khi tải dữ liệu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         }
+    }
+    private void loadTimeSlotsFromFirebase() {
+        DatabaseReference bookingsRef = FirebaseDatabase.getInstance().getReference("bookings");
+        bookingsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                bookingList.clear();
+                for (DataSnapshot bookingSnapshot : snapshot.getChildren()) {
+                    BookingCourtSync booking = bookingSnapshot.getValue(BookingCourtSync.class);
+                    bookingList.add(booking);
+                }
+                timeSlotAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error if needed
+            }
+        });
     }
 
 }

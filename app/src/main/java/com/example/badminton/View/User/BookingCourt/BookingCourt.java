@@ -2,6 +2,7 @@ package com.example.badminton.View.User.BookingCourt;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.example.badminton.Controller.CourtManagerController;
 import com.example.badminton.Model.BookingCourtSync;
 import com.example.badminton.Model.CourtSyncModel;
 import com.example.badminton.R;
+import com.example.badminton.View.User.ItemBookingCourt;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -35,9 +37,8 @@ import java.util.List;
 
 public class BookingCourt extends AppCompatActivity {
 
-
-    private TimePicker startTimePicker, endTimePicker; // Define TimePicker variables
-    private Button confirmButton;
+    private TimePicker startTimePicker, endTimePicker;
+    private Button confirmButton, btnBoooking;
     private TextView textViewName;
     private String nameAccount;
 
@@ -58,24 +59,25 @@ public class BookingCourt extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         confirmButton = findViewById(R.id.confirmButton);
         textViewName = findViewById(R.id.userName);
+        btnBoooking = findViewById(R.id.BookingButton);
 
+        btnBoooking.setOnClickListener(v -> {
+            Intent intent = new Intent(BookingCourt.this, ItemBookingCourt.class);
+            startActivity(intent);
+        });
 
         startTimePicker = findViewById(R.id.startTimePicker);
         endTimePicker = findViewById(R.id.endTimePicker);
 
         CourtManagerController courtManagerController = new CourtManagerController();
-
-
         courtManagerController.getAllCourts(new CourtManagerController.CourtDataCallback() {
             @Override
             public void onSuccess(List<CourtSyncModel> courtList) {
-
                 List<String> courtNames = new ArrayList<>();
                 for (CourtSyncModel court : courtList) {
                     courtNames.add(court.getName());
                 }
 
-                // Create an ArrayAdapter to populate the Spinner
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, courtNames);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 courtSpinner.setAdapter(adapter);
@@ -83,12 +85,10 @@ public class BookingCourt extends AppCompatActivity {
 
             @Override
             public void onFailure(Exception e) {
-                // Handle failure
                 Toast.makeText(getApplicationContext(), "Failed to load courts", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Date selection
         dateTextView.setOnClickListener(v -> {
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
@@ -104,11 +104,10 @@ public class BookingCourt extends AppCompatActivity {
                     },
                     year, month, day);
 
+            datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
             datePickerDialog.getDatePicker().setCalendarViewShown(false);
             datePickerDialog.show();
         });
-
-
 
         confirmButton.setOnClickListener(v -> {
             String selectedDate = dateTextView.getText().toString();
@@ -118,22 +117,22 @@ public class BookingCourt extends AppCompatActivity {
             int endHour = endTimePicker.getHour();
             int endMinute = endTimePicker.getMinute();
 
-
-            if (selectedDate.isEmpty() || selectedCourtName.isEmpty() || startHour == 0 || endHour == 0) {
-                Toast.makeText(getApplicationContext(), "Vui lòng chọn đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            if (selectedDate.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Vui lòng chọn ngày", Toast.LENGTH_SHORT).show();
+            } else if (selectedCourtName.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Vui lòng chọn sân", Toast.LENGTH_SHORT).show();
+            } else if (startHour == 0 || endHour == 0) {
+                Toast.makeText(getApplicationContext(), "Vui lòng chọn thời gian", Toast.LENGTH_SHORT).show();
             } else if (endHour < startHour || (endHour == startHour && endMinute <= startMinute)) {
-                Toast.makeText(getApplicationContext(), "Chọn thời gian phù hợp ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Chọn thời gian phù hợp", Toast.LENGTH_SHORT).show();
             } else {
                 String startTime = String.format("%02d:%02d", startHour, startMinute);
                 String endTime = String.format("%02d:%02d", endHour, endMinute);
-
 
                 showConfirmationDialog(selectedCourtName, selectedDate, startTime, endTime);
             }
         });
 
-
-        // Load user data
         loadUserData();
     }
 
@@ -151,23 +150,18 @@ public class BookingCourt extends AppCompatActivity {
         Button btnConfirmDialog = dialogView.findViewById(R.id.btnConfirmDialog);
         Button btnCancelDialog = dialogView.findViewById(R.id.btnCancelDialog);
 
-        // Set the text for the TextViews
-        textViewName.setText("Tên: "+nameAccount);
-        tvSelectedCourt.setText("Court: " + courtName);
-        tvSelectedDate.setText("Date: " + date);
-        tvStartTime.setText("Start Time: " + startTime);
-        tvEndTime.setText("End Time: " + endTime);
-
+        textViewName.setText("Tên: " + nameAccount);
+        tvSelectedCourt.setText("Sân: " + courtName);
+        tvSelectedDate.setText("Ngày đặt sân: " + date);
+        tvStartTime.setText("Thời gian bắt đầu: " + startTime);
+        tvEndTime.setText("Thời gian kết thúc: " + endTime);
 
         AlertDialog alertDialog = dialogBuilder.create();
 
-
         btnConfirmDialog.setOnClickListener(v -> {
-
             saveBookingToFirebase(courtName, date, startTime, endTime, nameAccount);
             alertDialog.dismiss();
         });
-
 
         btnCancelDialog.setOnClickListener(v -> alertDialog.dismiss());
 
@@ -175,11 +169,8 @@ public class BookingCourt extends AppCompatActivity {
     }
 
     private void saveBookingToFirebase(String courtName, String date, String startTime, String endTime, String username) {
-
         BookingCourtSync bookingCourtSync = new BookingCourtSync(courtName, date, startTime, endTime, username);
-
         DatabaseReference bookingRef = FirebaseDatabase.getInstance().getReference("bookings");
-
 
         bookingRef.push().setValue(bookingCourtSync)
                 .addOnCompleteListener(task -> {
@@ -202,10 +193,10 @@ public class BookingCourt extends AppCompatActivity {
                             nameAccount = documentSnapshot.getString("nameAccount");
                             textViewName.setText(nameAccount);
                         } else {
-                            Toast.makeText(this, "Không tiìm thấy uer", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Không tìm thấy người dùng", Toast.LENGTH_SHORT).show();
                         }
                     })
-                    .addOnFailureListener(e -> Toast.makeText(this, "Error loading user data: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                    .addOnFailureListener(e -> Toast.makeText(this, "Lỗi tải dữ liệu người dùng: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         }
     }
 }
