@@ -6,17 +6,26 @@ public class BookingCourtSync {
     private String startTime;
     private String endTime;
     private String userName;
+    private String courtName_date;
 
     public BookingCourtSync() {}
 
-    public BookingCourtSync(String courtName, String date, String startTime, String endTime, String userName) {
+    public String getCourtName_date() {
+        return courtName_date;
+    }
+
+    public void setCourtName_date(String courtName_date) {
+        this.courtName_date = courtName_date;
+    }
+
+    public BookingCourtSync(String courtName, String date, String startTime, String endTime, String username) {
         this.courtName = courtName;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.userName = userName;
+        this.userName = username;
+        this.courtName_date = courtName + "_" + date; // Gán giá trị khi tạo object
     }
-
     public String getCourtName() {
         return courtName;
     }

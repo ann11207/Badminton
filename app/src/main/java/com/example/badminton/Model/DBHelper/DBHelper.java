@@ -35,14 +35,21 @@ public class DBHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY(customer_id) REFERENCES Customer(id))");
         db.execSQL("create Table Bill (bill_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "court_id INTEGER, " +
-                "customer_id INTEGER, "+
+                "customer_id INTEGER, " +
                 "total_price DOUBLE," +
                 "date TEXT," +
-                " play_time_minutes INTEGER,"+
+                " play_time_minutes INTEGER," +
                 "FOREIGN KEY(court_id) REFERENCES Court(id), " +
-                "FOREIGN KEY(customer_id) REFERENCES Customer(id))" );
-    }
+                "FOREIGN KEY(customer_id) REFERENCES Customer(id))");
+        db.execSQL("create Table Catalog(catalog_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name TEXT NOT NULL UNIQUE)");
 
+        db.execSQL("create Table Product(product_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "name TEXT NOT NULL UNIQUE, " +
+                "price DOUBLE NOT NULL, " +
+                "image BLOB, " +
+                "quantity INTEGER )");
+    }
 
 
     @Override

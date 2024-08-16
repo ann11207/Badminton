@@ -26,8 +26,11 @@ import com.example.badminton.R;
 import com.example.badminton.View.User.ItemBookingCourt;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DateFormat;
@@ -59,12 +62,12 @@ public class BookingCourt extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         confirmButton = findViewById(R.id.confirmButton);
         textViewName = findViewById(R.id.userName);
-        btnBoooking = findViewById(R.id.BookingButton);
+//        btnBoooking = findViewById(R.id.BookingButton);
 
-        btnBoooking.setOnClickListener(v -> {
-            Intent intent = new Intent(BookingCourt.this, ItemBookingCourt.class);
-            startActivity(intent);
-        });
+//        btnBoooking.setOnClickListener(v -> {
+//            Intent intent = new Intent(BookingCourt.this, ItemBookingCourt.class);
+//            startActivity(intent);
+//        });
 
         startTimePicker = findViewById(R.id.startTimePicker);
         endTimePicker = findViewById(R.id.endTimePicker);
@@ -99,7 +102,7 @@ public class BookingCourt extends AppCompatActivity {
                     android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                     (view, year1, month1, dayOfMonth) -> {
                         calendar.set(year1, month1, dayOfMonth);
-                        String selectedDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(calendar.getTime());
+                        String selectedDate = String.format("%02d/%02d/%04d", dayOfMonth, month1 + 1, year1);
                         dateTextView.setText(selectedDate);
                     },
                     year, month, day);
@@ -109,6 +112,7 @@ public class BookingCourt extends AppCompatActivity {
             datePickerDialog.show();
         });
 
+
         confirmButton.setOnClickListener(v -> {
             String selectedDate = dateTextView.getText().toString();
             String selectedCourtName = courtSpinner.getSelectedItem() != null ? courtSpinner.getSelectedItem().toString() : "";
@@ -116,10 +120,12 @@ public class BookingCourt extends AppCompatActivity {
             int startMinute = startTimePicker.getMinute();
             int endHour = endTimePicker.getHour();
             int endMinute = endTimePicker.getMinute();
+            loadUserData();
 
-            if (selectedDate.isEmpty()) {
+            if (selectedDate.isEmpty()|| selectedDate.equals("Chọn ngày"))  {
                 Toast.makeText(getApplicationContext(), "Vui lòng chọn ngày", Toast.LENGTH_SHORT).show();
-            } else if (selectedCourtName.isEmpty()) {
+            }
+            else if (selectedCourtName.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "Vui lòng chọn sân", Toast.LENGTH_SHORT).show();
             } else if (startHour == 0 || endHour == 0) {
                 Toast.makeText(getApplicationContext(), "Vui lòng chọn thời gian", Toast.LENGTH_SHORT).show();
@@ -131,9 +137,10 @@ public class BookingCourt extends AppCompatActivity {
 
                 showConfirmationDialog(selectedCourtName, selectedDate, startTime, endTime);
             }
+
         });
 
-        loadUserData();
+
     }
 
     private void showConfirmationDialog(String courtName, String date, String startTime, String endTime) {
@@ -169,8 +176,48 @@ public class BookingCourt extends AppCompatActivity {
     }
 
     private void saveBookingToFirebase(String courtName, String date, String startTime, String endTime, String username) {
+        DatabaseReference bookingRef = FirebaseDatabase.getInstance().getReference("bookings");
+
+        // Truy vấn để kiểm tra xem có đặt sân nào cùng sân và ngày
+        bookingRef.orderByChild("courtName_date").equalTo(courtName + "_" + date)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        boolean isConflict = false;
+
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            BookingCourtSync existingBooking = snapshot.getValue(BookingCourtSync.class);
+
+                            // Kiểm tra trùng thời gian
+                            if (isTimeConflict(existingBooking.getStartTime(), existingBooking.getEndTime(), startTime, endTime)) {
+                                isConflict = true;
+                                break;
+                            }
+                        }
+
+                        if (isConflict) {
+                            Toast.makeText(getApplicationContext(), "Thời gian đặt sân bị trùng. Vui lòng chọn thời gian khác.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Nếu không có trùng lặp, lưu thông tin đặt sân vào Firebase
+                            saveBooking(courtName, date, startTime, endTime, username);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(getApplicationContext(), "Đặt sân thất bại", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
+
+    private void saveBooking(String courtName, String date, String startTime, String endTime, String username) {
         BookingCourtSync bookingCourtSync = new BookingCourtSync(courtName, date, startTime, endTime, username);
         DatabaseReference bookingRef = FirebaseDatabase.getInstance().getReference("bookings");
+
+        // Thêm một khóa duy nhất kết hợp tên sân và ngày để dễ dàng truy vấn
+        bookingCourtSync.setCourtName_date(courtName + "_" + date);
 
         bookingRef.push().setValue(bookingCourtSync)
                 .addOnCompleteListener(task -> {
@@ -181,6 +228,36 @@ public class BookingCourt extends AppCompatActivity {
                     }
                 });
     }
+
+    private boolean isTimeConflict(String existingStartTime, String existingEndTime, String newStartTime, String newEndTime) {
+        // Chuyển đổi thời gian từ String sang Date hoặc thời gian phút nếu cần
+        int existingStart = convertTimeToMinutes(existingStartTime);
+        int existingEnd = convertTimeToMinutes(existingEndTime);
+        int newStart = convertTimeToMinutes(newStartTime);
+        int newEnd = convertTimeToMinutes(newEndTime);
+
+        // Kiểm tra xem thời gian mới có trùng với thời gian hiện tại không
+        return (newStart < existingEnd && newEnd > existingStart);
+    }
+
+    private int convertTimeToMinutes(String time) {
+        String[] parts = time.split(":");
+        int hours = Integer.parseInt(parts[0]);
+        int minutes = Integer.parseInt(parts[1]);
+        return hours * 60 + minutes;
+    }
+
+
+//
+//        bookingRef.push().setValue(bookingCourtSync)
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        Toast.makeText(getApplicationContext(), "Đặt sân thành công", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(getApplicationContext(), "Đặt sân thất bại", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+
 
     private void loadUserData() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -199,4 +276,5 @@ public class BookingCourt extends AppCompatActivity {
                     .addOnFailureListener(e -> Toast.makeText(this, "Lỗi tải dữ liệu người dùng: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         }
     }
+
 }

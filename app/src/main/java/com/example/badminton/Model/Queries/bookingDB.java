@@ -37,24 +37,24 @@ public class bookingDB extends DBHelper {
             int endTimeIndex = cursor.getColumnIndex("end_time");
             int priceIndex = cursor.getColumnIndex("price");
 
-            if (bookingIdIndex != -1) {
-                booking.setBookingId(cursor.getInt(bookingIdIndex));
-            }
-            if (courtIdIndex != -1) {
-                booking.setCourtId(cursor.getInt(courtIdIndex));
-            }
-            if (customerIdIndex != -1) {
-                booking.setCustomerId(cursor.getInt(customerIdIndex));
-            }
-            if (startTimeIndex != -1) {
-                booking.setStartTime(cursor.getLong(startTimeIndex));
-            }
-            if (endTimeIndex != -1) {
-                booking.setEndTime(cursor.getLong(endTimeIndex));
-            }
-            if (priceIndex != -1) {
-                booking.setPrice(cursor.getDouble(priceIndex));
-            }
+//            if (bookingIdIndex != -1) {
+//                booking.setBookingId(cursor.getInt(bookingIdIndex));
+//            }
+//            if (courtIdIndex != -1) {
+//                booking.setCourtId(cursor.getInt(courtIdIndex));
+//            }
+//            if (customerIdIndex != -1) {
+//                booking.setCustomerId(cursor.getInt(customerIdIndex));
+//            }
+//            if (startTimeIndex != -1) {
+//                booking.setStartTime(cursor.getLong(startTimeIndex));
+//            }
+//            if (endTimeIndex != -1) {
+//                booking.setEndTime(cursor.getLong(endTimeIndex));
+//            }
+//            if (priceIndex != -1) {
+//                booking.setPrice(cursor.getDouble(priceIndex));
+//            }
             cursor.close();
             return booking;
         }

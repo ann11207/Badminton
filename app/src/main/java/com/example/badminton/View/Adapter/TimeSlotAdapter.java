@@ -69,7 +69,8 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSl
         try {
             date = inputFormat.parse(dateString);
             return outputFormat.format(date);
-        } catch (ParseException e) {
+        } catch (ParseException e)
+        {
             e.printStackTrace();
             return dateString;
         }
