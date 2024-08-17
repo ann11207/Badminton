@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Badminton"
         tools:targetApi="31">
         <activity
+            android:name=".View.User.BookingCourt.dialog_available_times"
+            android:exported="false" />
+        <activity
             android:name=".View.Admin.ItemBookingAdmin"
             android:exported="false" />
         <activity

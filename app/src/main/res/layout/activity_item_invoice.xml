@@ -6,16 +6,28 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="wrap_content"
-    tools:context=".View.Admin.Setting.StatisticalBill.item_invoice">
 
+    tools:context=".View.Admin.Setting.StatisticalBill.item_invoice">
+<TextView
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Hoá đơn"
+    android:textStyle="bold"
+    android:layout_margin="10dp"
+    android:textSize="20sp">
+</TextView>
     <TextView
         android:id="@+id/textViewInvoiceCourt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sân: "
+        android:layout_margin="10dp"
         android:textSize="16sp"/>
 
     <TextView
+        android:layout_margin="10dp"
         android:id="@+id/textViewInvoiceTotalPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,6 +35,7 @@
         android:textSize="16sp"/>
 
     <TextView
+        android:layout_margin="10dp"
         android:id="@+id/textViewInvoicePlayTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,6 +43,7 @@
         android:textSize="16sp"/>
 
     <TextView
+        android:layout_margin="10dp"
         android:id="@+id/textViewInvoiceDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

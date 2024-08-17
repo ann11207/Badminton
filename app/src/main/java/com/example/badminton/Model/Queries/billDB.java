@@ -63,19 +63,19 @@ public class billDB extends DBHelper {
     }
 
 
-    public boolean updateBill(BillDBModel bill) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("court_id", bill.getCourtId());
-        values.put("customer_id", bill.getCustomerId());
-        values.put("total_price", bill.getTotalPrice());
-        values.put("date", bill.getDate());
-        values.put("play_time_minutes", bill.getPlayTimeMinutes());
-
-        int result = db.update("Bill", values, "bill_id = ?", new String[]{String.valueOf(bill.getBillId())});
-        db.close();
-        return result > 0;
-    }
+//    public boolean updateBill(BillDBModel bill) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//        values.put("court_id", bill.getCourtId());
+//        values.put("customer_id", bill.getCustomerId());
+//        values.put("total_price", bill.getTotalPrice());
+//        values.put("date", bill.getDate());
+//        values.put("play_time_minutes", bill.getPlayTimeMinutes());
+//
+//        int result = db.update("Bill", values, "bill_id = ?", new String[]{String.valueOf(bill.getBillId())});
+//        db.close();
+//        return result > 0;
+//    }
 
 
     public boolean deleteBill(int billId) {
@@ -88,7 +88,7 @@ public class billDB extends DBHelper {
         List<BillDBModel> billList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // Sử dụng LIKE để so sánh ngày mà không quan tâm đến giờ
+
         Cursor cursor = db.rawQuery("SELECT * FROM Bill WHERE date LIKE ?", new String[]{date + "%"});
 
         if (cursor.moveToFirst()) {

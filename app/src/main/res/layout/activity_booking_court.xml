@@ -6,87 +6,108 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".View.User.BookingCourt.BookingCourt">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tên: "
-        android:id="@+id/userName">
-    </TextView>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chọn ngày đặt sân :  "
-            >
-        </TextView>
-        <TextView
-            android:id="@+id/dateTextView"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:padding="16dp"
-            android:gravity="center"
-            android:background="#CECBCB"
-            android:textSize="16sp" />
-    </LinearLayout>
 
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-<TextView
-    android:layout_margin="16dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Chọn thời gian bắt đầu"
-    android:textStyle="bold"
-    android:layout_gravity="center"
-    android:gravity="center">
-</TextView>
-        <TimePicker
-            android:layout_gravity="center"
-            android:id="@+id/startTimePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:timePickerMode="spinner"
-            android:layout_weight="1" />
-        <TextView
-            android:layout_margin="16dp"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Chọn thời gian kết thúc"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:gravity="center">
-        </TextView>
-        <TimePicker
-            android:layout_gravity="center"
-            android:id="@+id/endTimePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:timePickerMode="spinner"
-            android:layout_weight="1" />
-    </LinearLayout>
-    <Spinner
-        android:id="@+id/courtSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp" />
-    <Button
-        android:layout_gravity="center"
-        android:id="@+id/confirmButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Xác nhận" />
-<!--    <Button-->
-<!--        android:id="@+id/BookingButton"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Confirm Booking" />-->
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tên: "
+                android:id="@+id/userName" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chọn ngày đặt sân :  " />
+                <TextView
+                    android:id="@+id/dateTextView"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:padding="16dp"
+                    android:gravity="center"
+                    android:background="#CECBCB"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_margin="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Chọn thời gian bắt đầu"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:gravity="center" />
+                <TimePicker
+                    android:layout_gravity="center"
+                    android:id="@+id/startTimePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:timePickerMode="spinner"
+                    android:layout_weight="1" />
+                <TextView
+                    android:layout_margin="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Chọn thời gian kết thúc"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:gravity="center" />
+                <TimePicker
+                    android:layout_gravity="center"
+                    android:id="@+id/endTimePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:timePickerMode="spinner"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/courtSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp" />
+
+            <Button
+                android:layout_gravity="center"
+                android:id="@+id/confirmButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Xác nhận" />
+
+            <TextView
+                android:id="@+id/tvAvailableTimes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:padding="16dp" />
+
+            <Button
+                android:id="@+id/btnShowAvailableTimes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Xem thời gian trống" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
 </LinearLayout>

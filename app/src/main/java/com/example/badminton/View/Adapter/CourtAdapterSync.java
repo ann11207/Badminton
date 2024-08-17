@@ -56,7 +56,7 @@ public class CourtAdapterSync extends RecyclerView.Adapter<CourtAdapterSync.Cour
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Xử lý lỗi
+
             }
         });
     }

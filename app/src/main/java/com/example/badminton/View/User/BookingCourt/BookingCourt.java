@@ -44,7 +44,7 @@ public class BookingCourt extends AppCompatActivity {
     private Button confirmButton, btnBoooking;
     private TextView textViewName;
     private String nameAccount;
-
+    private Button btnShowAvailableSlots;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +68,8 @@ public class BookingCourt extends AppCompatActivity {
 //            Intent intent = new Intent(BookingCourt.this, ItemBookingCourt.class);
 //            startActivity(intent);
 //        });
+        Button btnShowAvailableTimes = findViewById(R.id.btnShowAvailableTimes);
+        btnShowAvailableTimes.setOnClickListener(v -> showAvailableTimeSlots());
 
         startTimePicker = findViewById(R.id.startTimePicker);
         endTimePicker = findViewById(R.id.endTimePicker);
@@ -120,11 +122,13 @@ public class BookingCourt extends AppCompatActivity {
             int startMinute = startTimePicker.getMinute();
             int endHour = endTimePicker.getHour();
             int endMinute = endTimePicker.getMinute();
-            loadUserData();
 
-            if (selectedDate.isEmpty()|| selectedDate.equals("Chọn ngày"))  {
+            if (selectedDate.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Vui lòng chọn ngày", Toast.LENGTH_SHORT).show();
+            } else if (dateTextView.getText().toString().isEmpty()){
                 Toast.makeText(getApplicationContext(), "Vui lòng chọn ngày", Toast.LENGTH_SHORT).show();
             }
+
             else if (selectedCourtName.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "Vui lòng chọn sân", Toast.LENGTH_SHORT).show();
             } else if (startHour == 0 || endHour == 0) {
@@ -137,10 +141,9 @@ public class BookingCourt extends AppCompatActivity {
 
                 showConfirmationDialog(selectedCourtName, selectedDate, startTime, endTime);
             }
-
         });
 
-
+        loadUserData();
     }
 
     private void showConfirmationDialog(String courtName, String date, String startTime, String endTime) {
@@ -276,5 +279,120 @@ public class BookingCourt extends AppCompatActivity {
                     .addOnFailureListener(e -> Toast.makeText(this, "Lỗi tải dữ liệu người dùng: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         }
     }
+    private void showAvailableTimeSlots() {
+        Spinner courtSpinner = findViewById(R.id.courtSpinner);
+        TextView dateTextView = findViewById(R.id.dateTextView);
+        String selectedDate = dateTextView.getText().toString();
+        String selectedCourtName = courtSpinner.getSelectedItem() != null ? courtSpinner.getSelectedItem().toString() : "";
+
+        if (selectedDate.isEmpty() || selectedDate.equals("Chọn ngày")) {
+            Toast.makeText(getApplicationContext(), "Vui lòng chọn ngày", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (selectedCourtName.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Vui lòng chọn sân", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DatabaseReference bookingRef = FirebaseDatabase.getInstance().getReference("bookings");
+        bookingRef.orderByChild("courtName_date").equalTo(selectedCourtName + "_" + selectedDate)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        List<TimeSlot> bookedTimeSlots = new ArrayList<>();
+
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            BookingCourtSync existingBooking = snapshot.getValue(BookingCourtSync.class);
+                            int start = convertTimeToMinutes(existingBooking.getStartTime());
+                            int end = convertTimeToMinutes(existingBooking.getEndTime());
+                            bookedTimeSlots.add(new TimeSlot(start, end));
+                        }
+
+                        List<TimeSlot> availableTimeSlots = calculateAvailableTimeSlots(bookedTimeSlots);
+                        showAvailableTimeSlotsDialog(selectedCourtName, availableTimeSlots);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(getApplicationContext(), "Lỗi tải thời gian trống", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
+    private List<TimeSlot> calculateAvailableTimeSlots(List<TimeSlot> bookedTimeSlots) {
+        List<TimeSlot> availableTimeSlots = new ArrayList<>();
+        int startOfDay = 0; // 00:00
+        int endOfDay = 24 * 60; // 24:00
+
+        if (bookedTimeSlots.isEmpty()) {
+            availableTimeSlots.add(new TimeSlot(startOfDay, endOfDay));
+            return availableTimeSlots;
+        }
+
+        int lastEndTime = startOfDay;
+        for (TimeSlot slot : bookedTimeSlots) {
+            if (slot.getStart() > lastEndTime) {
+                availableTimeSlots.add(new TimeSlot(lastEndTime, slot.getStart()));
+            }
+            lastEndTime = slot.getEnd();
+        }
+
+        if (lastEndTime < endOfDay) {
+            availableTimeSlots.add(new TimeSlot(lastEndTime, endOfDay));
+        }
+
+        return availableTimeSlots;
+    }
+
+    private class TimeSlot {
+        private int start;
+        private int end;
+
+        public TimeSlot(int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
+
+        public int getStart() {
+            return start;
+        }
+
+        public int getEnd() {
+            return end;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("%02d:%02d - %02d:%02d", start / 60, start % 60, end / 60, end % 60);
+        }
+    }
+
+
+
+    private void showAvailableTimeSlotsDialog(String courtName, List<TimeSlot> availableTimeSlots) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.activity_dialog_available_times, null);
+        dialogBuilder.setView(dialogView);
+
+        TextView tvCourtName = dialogView.findViewById(R.id.tvCourtName); // Make sure this is in dialogView
+        TextView tvAvailableTimes = dialogView.findViewById(R.id.tvAvailableTimes);
+
+        // Set the court name
+        tvCourtName.setText("Sân: " + courtName);
+
+        StringBuilder times = new StringBuilder();
+        for (TimeSlot slot : availableTimeSlots) {
+            times.append(slot.toString()).append("\n");
+        }
+        tvAvailableTimes.setText(times.toString());
+
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+    }
+
+
 
 }
