@@ -1,6 +1,7 @@
 package com.example.badminton.Model;
 
 public class BookingCourtSync {
+    private String idBooking;
     private String courtName;
     private String date;
     private String startTime;
@@ -24,8 +25,17 @@ public class BookingCourtSync {
         this.startTime = startTime;
         this.endTime = endTime;
         this.userName = username;
-        this.courtName_date = courtName + "_" + date; // Gán giá trị khi tạo object
+        this.courtName_date = courtName + "_" + date;
     }
+
+    public String getIdBooking() {
+        return idBooking;
+    }
+
+    public void setIdBooking(String idBooking) {
+        this.idBooking = idBooking;
+    }
+
     public String getCourtName() {
         return courtName;
     }

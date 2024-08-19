@@ -95,7 +95,7 @@ public class DashBoardAdmin extends AppCompatActivity {
         recyclerViewTimeSlots.setLayoutManager(new LinearLayoutManager(this));
 
         bookingList = new ArrayList<>();
-         timeSlotAdapter = new TimeSlotAdapter(bookingList);
+         timeSlotAdapter = new TimeSlotAdapter(bookingList,this);
         recyclerViewTimeSlots.setAdapter(timeSlotAdapter);
 
         gridViewCourt = findViewById(R.id.gridView_Court);

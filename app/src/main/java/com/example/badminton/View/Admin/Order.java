@@ -166,9 +166,9 @@ public class Order extends AppCompatActivity {
                 DatabaseReference courtRef = FirebaseDatabase.getInstance().getReference("courts").child(String.valueOf(courtId));
                 courtRef.child("statusCourt").setValue("Hoạt động").addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(this, "Sân đã được cập nhật trạng thái là 'Hoạt động' trong Firebase", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Hoạt động", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(this, "Cập nhật trạng thái sân thất bại trong Firebase", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -239,7 +239,7 @@ public class Order extends AppCompatActivity {
         DatabaseReference courtRef = FirebaseDatabase.getInstance().getReference("courts").child(String.valueOf(courtId));
         courtRef.child("statusCourt").setValue("Trống").addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Toast.makeText(Order.this, "Sân đã được cập nhật trạng thái là 'Trống' trong Firebase", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Order.this, "Sân đã được cập nhật trạng thái là 'Trống'", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(Order.this, "Cập nhật trạng thái sân thất bại trong Firebase", Toast.LENGTH_SHORT).show();
             }
@@ -278,7 +278,7 @@ public class Order extends AppCompatActivity {
                             // Xóa thời gian lưu trong SharedPreferences
                             resetTimeValues();
 
-                            Toast.makeText(Order.this, "Hóa đơn đã được lưu và sân đã được cập nhật trạng thái", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Order.this, "Hóa đơn đã được lưu ", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(Order.this, "Không thể lưu hóa đơn", Toast.LENGTH_SHORT).show();
                         }

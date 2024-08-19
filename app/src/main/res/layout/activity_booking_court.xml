@@ -7,10 +7,7 @@
     android:orientation="vertical"
     tools:context=".View.User.BookingCourt.BookingCourt">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,6 +44,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/courtSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp" />
+                <Button
+                    android:layout_gravity="center"
+                    android:id="@+id/btnShowAvailableTimes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Xem thời gian trống" />
+
                 <TextView
                     android:layout_margin="16dp"
                     android:layout_width="match_parent"
@@ -79,13 +90,6 @@
                     android:layout_weight="1" />
             </LinearLayout>
 
-            <Spinner
-                android:id="@+id/courtSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp" />
-
             <Button
                 android:layout_gravity="center"
                 android:id="@+id/confirmButton"
@@ -93,21 +97,11 @@
                 android:layout_height="wrap_content"
                 android:text="Xác nhận" />
 
-            <TextView
-                android:id="@+id/tvAvailableTimes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:padding="16dp" />
 
-            <Button
-                android:id="@+id/btnShowAvailableTimes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Xem thời gian trống" />
+
+
 
         </LinearLayout>
-    </ScrollView>
 
 
 </LinearLayout>

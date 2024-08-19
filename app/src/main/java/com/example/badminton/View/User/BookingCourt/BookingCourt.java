@@ -2,7 +2,6 @@ package com.example.badminton.View.User.BookingCourt;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +22,6 @@ import com.example.badminton.Controller.CourtManagerController;
 import com.example.badminton.Model.BookingCourtSync;
 import com.example.badminton.Model.CourtSyncModel;
 import com.example.badminton.R;
-import com.example.badminton.View.User.ItemBookingCourt;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,7 +31,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -44,7 +41,7 @@ public class BookingCourt extends AppCompatActivity {
     private Button confirmButton, btnBoooking;
     private TextView textViewName;
     private String nameAccount;
-    private Button btnShowAvailableSlots;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -215,22 +212,44 @@ public class BookingCourt extends AppCompatActivity {
 
 
 
-    private void saveBooking(String courtName, String date, String startTime, String endTime, String username) {
-        BookingCourtSync bookingCourtSync = new BookingCourtSync(courtName, date, startTime, endTime, username);
-        DatabaseReference bookingRef = FirebaseDatabase.getInstance().getReference("bookings");
+//    private void saveBooking(String courtName, String date, String startTime, String endTime, String username) {
+//        BookingCourtSync bookingCourtSync = new BookingCourtSync(courtName, date, startTime, endTime, username);
+//        DatabaseReference bookingRef = FirebaseDatabase.getInstance().getReference("bookings");
+//
+//        // Thêm một khóa duy nhất kết hợp tên sân và ngày để dễ dàng truy vấn
+//        bookingCourtSync.setCourtName_date(courtName + "_" + date);
+//
+//        bookingRef.push().setValue(bookingCourtSync)
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        Toast.makeText(getApplicationContext(), "Đặt sân thành công", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(getApplicationContext(), "Đặt sân thất bại", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//    }
+private void saveBooking(String courtName, String date, String startTime, String endTime, String username) {
+    DatabaseReference bookingRef = FirebaseDatabase.getInstance().getReference("bookings");
 
-        // Thêm một khóa duy nhất kết hợp tên sân và ngày để dễ dàng truy vấn
-        bookingCourtSync.setCourtName_date(courtName + "_" + date);
+    // Generate a unique key for the booking
+    String bookingId = bookingRef.push().getKey();
 
-        bookingRef.push().setValue(bookingCourtSync)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(getApplicationContext(), "Đặt sân thành công", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Đặt sân thất bại", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
+    // Create a new booking object with the generated ID
+    BookingCourtSync bookingCourtSync = new BookingCourtSync(courtName, date, startTime, endTime, username);
+    bookingCourtSync.setIdBooking(bookingId);
+    bookingCourtSync.setCourtName_date(courtName + "_" + date);
+
+    // Save the booking to Firebase
+    bookingRef.child(bookingId).setValue(bookingCourtSync)
+            .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Đặt sân thành công", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Đặt sân thất bại", Toast.LENGTH_SHORT).show();
+                }
+            });
+}
+
 
     private boolean isTimeConflict(String existingStartTime, String existingEndTime, String newStartTime, String newEndTime) {
         // Chuyển đổi thời gian từ String sang Date hoặc thời gian phút nếu cần
@@ -251,15 +270,7 @@ public class BookingCourt extends AppCompatActivity {
     }
 
 
-//
-//        bookingRef.push().setValue(bookingCourtSync)
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        Toast.makeText(getApplicationContext(), "Đặt sân thành công", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(getApplicationContext(), "Đặt sân thất bại", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+
 
 
     private void loadUserData() {
@@ -323,8 +334,8 @@ public class BookingCourt extends AppCompatActivity {
 
     private List<TimeSlot> calculateAvailableTimeSlots(List<TimeSlot> bookedTimeSlots) {
         List<TimeSlot> availableTimeSlots = new ArrayList<>();
-        int startOfDay = 0; // 00:00
-        int endOfDay = 24 * 60; // 24:00
+        int startOfDay = 0;
+        int endOfDay = 24 * 60;
 
         if (bookedTimeSlots.isEmpty()) {
             availableTimeSlots.add(new TimeSlot(startOfDay, endOfDay));
@@ -377,7 +388,7 @@ public class BookingCourt extends AppCompatActivity {
         View dialogView = inflater.inflate(R.layout.activity_dialog_available_times, null);
         dialogBuilder.setView(dialogView);
 
-        TextView tvCourtName = dialogView.findViewById(R.id.tvCourtName); // Make sure this is in dialogView
+        TextView tvCourtName = dialogView.findViewById(R.id.tvCourtName);
         TextView tvAvailableTimes = dialogView.findViewById(R.id.tvAvailableTimes);
 
         // Set the court name

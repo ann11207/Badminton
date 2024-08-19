@@ -39,17 +39,17 @@ public class CourtAdapterSync extends RecyclerView.Adapter<CourtAdapterSync.Cour
         CourtSyncModel court = courtList.get(position);
         holder.tvCourtName.setText("Court " + court.getName());
 
-        // Lắng nghe thay đổi trạng thái sân từ Firebase
+
         DatabaseReference courtRef = FirebaseDatabase.getInstance().getReference("courts").child(String.valueOf(court.getId()));
         courtRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String statusCourt = snapshot.child("statusCourt").getValue(String.class);
                 if ("Trống".equals(statusCourt)) {
-                    holder.itemView.setBackgroundColor(Color.WHITE); // Màu trắng
+                    holder.itemView.setBackgroundColor(Color.WHITE);
                     holder.tvStatus.setText("Trống");
                 } else {
-                    holder.itemView.setBackgroundColor(Color.GREEN); // Màu xanh
+                    holder.itemView.setBackgroundColor(Color.GREEN);
                     holder.tvStatus.setText("Đã đặt");
                 }
             }

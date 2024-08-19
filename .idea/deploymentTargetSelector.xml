@@ -3,8 +3,8 @@
   <component name="deploymentTargetSelector">
     <selectionStates>
       <SelectionState runConfigName="app">
-        <option name="selectionMode" value="DIALOG" />
-        <DropdownSelection timestamp="2024-08-17T06:54:12.677344Z">
+        <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2024-08-19T09:06:52.492098Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=/Users/minhaan/.android/avd/Medium_Tablet_API_35.avd" />
@@ -15,12 +15,12 @@
           <targets>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="LocalEmulator" identifier="path=/Users/minhaan/.android/avd/Pixel_8_API_35.avd" />
+                <DeviceId pluginId="LocalEmulator" identifier="path=/Users/minhaan/.android/avd/Medium_Tablet_API_35.avd" />
               </handle>
             </Target>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="LocalEmulator" identifier="path=/Users/minhaan/.android/avd/Medium_Tablet_API_35.avd" />
+                <DeviceId pluginId="LocalEmulator" identifier="path=/Users/minhaan/.android/avd/Pixel_8_API_35.avd" />
               </handle>
             </Target>
           </targets>

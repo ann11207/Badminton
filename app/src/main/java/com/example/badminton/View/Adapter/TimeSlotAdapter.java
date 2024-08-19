@@ -1,13 +1,20 @@
 package com.example.badminton.View.Adapter;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.badminton.Model.BookingCourtSync;
 import com.example.badminton.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,9 +24,11 @@ import java.util.Locale;
 public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSlotViewHolder> {
 
     private List<BookingCourtSync> bookingList;
+    private Context context;
 
-    public TimeSlotAdapter(List<BookingCourtSync> bookingList) {
+    public TimeSlotAdapter(List<BookingCourtSync> bookingList, Context context) {
         this.bookingList = bookingList;
+        this.context = context;
     }
 
     @NonNull
@@ -42,6 +51,9 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSl
 
         String formattedDate = formatDate(booking.getDate());
         holder.tvDate.setText(formattedDate);
+        holder.itemView.setOnClickListener(v -> {
+            showDeleteConfirmationDialog(booking, position);
+        });
     }
 
     @Override
@@ -75,5 +87,41 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSl
             return dateString;
         }
     }
+    private void showDeleteConfirmationDialog(BookingCourtSync booking, int position) {
+        new AlertDialog.Builder(context)
+                .setTitle(" Xác nhận đã nhận sân ")
+                .setMessage("")
+                .setPositiveButton(" Xác nhận ", (dialog, which) -> {
+
+                    deleteBookingFromFirebase(booking.getIdBooking(), position);
+                })
+                .setNegativeButton("Khách huỷ", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .show();
+    }
+
+    private void deleteBookingFromFirebase(String bookingId, int position) {
+        DatabaseReference bookingsRef = FirebaseDatabase.getInstance().getReference("bookings");
+        bookingsRef.child(bookingId).removeValue().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+
+                if (position >= 0 && position < bookingList.size()) {
+                    bookingList.remove(position);
+                    notifyItemRemoved(position);
+                } else {
+
+                    Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+                }
+
+            } else {
+                // Xoá thất bại
+                Toast.makeText(context, "Lỗi khi xoá đặt sân", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
 
 }

@@ -35,7 +35,7 @@ public class ManageCourts extends AppCompatActivity {
         recyclerViewTimeSlots.setLayoutManager(new LinearLayoutManager(this));
 
         bookingList = new ArrayList<>();
-        timeSlotAdapter = new TimeSlotAdapter(bookingList);
+        timeSlotAdapter = new TimeSlotAdapter(bookingList, this);
         recyclerViewTimeSlots.setAdapter(timeSlotAdapter);
 
         loadTimeSlotsFromFirebase();
