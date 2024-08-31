@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_margin="20dp"
-        android:columnCount="5"
+        android:columnCount="4"
         android:rowCount="2">
 
         <LinearLayout
@@ -114,7 +114,7 @@
             android:orientation="vertical">
 
             <ImageButton
-android:id="@+id/imgbtn_Bill"
+                android:id="@+id/imgbtn_Bill"
                 android:layout_width="130dp"
                 android:layout_height="120dp"
                 android:layout_gravity="center"
@@ -141,28 +141,55 @@ android:id="@+id/imgbtn_Bill"
             android:layout_margin="50dp"
             android:orientation="vertical">
 
-<!--            <ImageButton-->
+            <ImageButton
+                android:id="@+id/calanda"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:background="@drawable/calendar"
+                android:backgroundTint="@color/black">
 
-<!--                android:layout_width="120dp"-->
-<!--                android:layout_height="120dp"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:background="@drawable/stadium"-->
-<!--                android:backgroundTint="@color/black">-->
+            </ImageButton>
 
-<!--            </ImageButton>-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:text="Lịch đặt sân chi tiết"
+                android:textColor="@color/black"
+                android:textSize="25sp">
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:text="Thêm sân"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textSize="25sp">-->
-
-<!--            </TextView>-->
+            </TextView>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="50dp"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/product"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:background="@drawable/products"
+                android:backgroundTint="@color/black">
+
+            </ImageButton>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:text="Sản phẩm"
+                android:textColor="@color/black"
+                android:textSize="25sp">
+
+            </TextView>
+        </LinearLayout>
     </GridLayout>
 
 </LinearLayout>

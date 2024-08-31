@@ -13,14 +13,16 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.badminton.R;
 import com.example.badminton.View.Admin.DashBoardAdmin;
+import com.example.badminton.View.Admin.Setting.Calander.Calander;
 import com.example.badminton.View.Admin.Setting.Court.ManageCourt;
 import com.example.badminton.View.Admin.Setting.Customer.ManageCustomer;
 import com.example.badminton.View.Admin.ManageUserAdmin;
+import com.example.badminton.View.Admin.Setting.Products.ManageProduct;
 import com.example.badminton.View.Admin.Setting.StatisticalBill.StatisticalBill;
 
 public class Setting extends AppCompatActivity {
 
-    ImageButton imgbtn_editInfo,imgbtn_manageCourt, imgbtn_back, imgbtn_addCustomer, imgbtn_bill;
+    ImageButton imgbtn_editInfo,imgbtn_manageCourt, imgbtn_back, imgbtn_addCustomer, imgbtn_bill, img_calander, img_product;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,17 @@ public class Setting extends AppCompatActivity {
             return insets;
         });
 
+        img_calander = findViewById(R.id.calanda);
+        img_calander.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent openCalanda = new Intent(Setting.this, Calander.class);
+                        startActivity(openCalanda);
+                        finish();
+                    }
+                }
+        );
 imgbtn_bill = findViewById(R.id.imgbtn_Bill);
         imgbtn_back = findViewById(R.id.btn_back);
         imgbtn_editInfo = findViewById(R.id.imgbtn_editInfo);
@@ -47,6 +60,15 @@ imgbtn_bill = findViewById(R.id.imgbtn_Bill);
             }
         });
 
+        img_product = findViewById(R.id.product);
+        img_product.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent openListProduct = new Intent(Setting.this, ManageProduct.class);
+                startActivity(openListProduct);
+                finish();
+            }
+        });
 
 imgbtn_bill.setOnClickListener(new View.OnClickListener() {
     @Override

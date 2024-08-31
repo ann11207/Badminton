@@ -212,7 +212,7 @@ public class BookingCourt extends AppCompatActivity {
 
 
 
-//    private void saveBooking(String courtName, String date, String startTime, String endTime, String username) {
+    //    private void saveBooking(String courtName, String date, String startTime, String endTime, String username) {
 //        BookingCourtSync bookingCourtSync = new BookingCourtSync(courtName, date, startTime, endTime, username);
 //        DatabaseReference bookingRef = FirebaseDatabase.getInstance().getReference("bookings");
 //
@@ -228,27 +228,27 @@ public class BookingCourt extends AppCompatActivity {
 //                    }
 //                });
 //    }
-private void saveBooking(String courtName, String date, String startTime, String endTime, String username) {
-    DatabaseReference bookingRef = FirebaseDatabase.getInstance().getReference("bookings");
+    private void saveBooking(String courtName, String date, String startTime, String endTime, String username) {
+        DatabaseReference bookingRef = FirebaseDatabase.getInstance().getReference("bookings");
 
-    // Generate a unique key for the booking
-    String bookingId = bookingRef.push().getKey();
+        // Generate a unique key for the booking
+        String bookingId = bookingRef.push().getKey();
 
-    // Create a new booking object with the generated ID
-    BookingCourtSync bookingCourtSync = new BookingCourtSync(courtName, date, startTime, endTime, username);
-    bookingCourtSync.setIdBooking(bookingId);
-    bookingCourtSync.setCourtName_date(courtName + "_" + date);
+        // Create a new booking object with the generated ID
+        BookingCourtSync bookingCourtSync = new BookingCourtSync(courtName, date, startTime, endTime, username);
+        bookingCourtSync.setIdBooking(bookingId);
+        bookingCourtSync.setCourtName_date(courtName + "_" + date);
 
-    // Save the booking to Firebase
-    bookingRef.child(bookingId).setValue(bookingCourtSync)
-            .addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Đặt sân thành công", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Đặt sân thất bại", Toast.LENGTH_SHORT).show();
-                }
-            });
-}
+        // Save the booking to Firebase
+        bookingRef.child(bookingId).setValue(bookingCourtSync)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(getApplicationContext(), "Đặt sân thành công", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Đặt sân thất bại", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 
 
     private boolean isTimeConflict(String existingStartTime, String existingEndTime, String newStartTime, String newEndTime) {

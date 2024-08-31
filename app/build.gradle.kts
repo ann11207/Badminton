@@ -1,3 +1,5 @@
+import java.util.regex.Pattern.compile
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
@@ -70,6 +72,12 @@ dependencies {
     implementation("com.github.AnyChart:AnyChart-Android:0.0.3")
     implementation ("com.github.AnyChart:AnyChart-Android:1.1.5")
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+
+    // api calendar google
+
+//    implementation ("com.google.android.gms:play-services-auth:20.5.0")
+
 
 
 

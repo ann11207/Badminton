@@ -76,7 +76,10 @@ public class GridViewCourtAdapter extends BaseAdapter {
                 break;
         }
 
-        convertView.setOnClickListener(v -> showCustomerList(court.getId()));
+        convertView.setOnClickListener(v ->
+
+
+                showCustomerList(court.getId()));
 
         return convertView;
     }

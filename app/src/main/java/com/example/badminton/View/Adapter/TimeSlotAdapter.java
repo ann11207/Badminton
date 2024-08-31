@@ -89,39 +89,41 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSl
     }
     private void showDeleteConfirmationDialog(BookingCourtSync booking, int position) {
         new AlertDialog.Builder(context)
-                .setTitle(" Xác nhận đã nhận sân ")
+                .setTitle("Xác nhận đã nhận sân")
                 .setMessage("")
-                .setPositiveButton(" Xác nhận ", (dialog, which) -> {
-
-                    deleteBookingFromFirebase(booking.getIdBooking(), position);
+                .setPositiveButton("Xác nhận", (dialog, which) -> {
+                    String bookingId = booking.getIdBooking();
+                    if (bookingId != null && !bookingId.isEmpty()) {
+                        deleteBookingFromFirebase(bookingId, position);
+                    } else {
+                        Toast.makeText(context, "Không thể xác định ID của đặt sân", Toast.LENGTH_SHORT).show();
+                    }
                 })
-                .setNegativeButton("Khách huỷ", (dialog, which) -> {
-                    dialog.dismiss();
-                })
+                .setNegativeButton("Khách huỷ", (dialog, which) -> dialog.dismiss())
                 .show();
     }
 
     private void deleteBookingFromFirebase(String bookingId, int position) {
+        if (bookingId == null || bookingId.isEmpty()) {
+            Toast.makeText(context, "ID của đặt sân không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         DatabaseReference bookingsRef = FirebaseDatabase.getInstance().getReference("bookings");
         bookingsRef.child(bookingId).removeValue().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-
                 if (position >= 0 && position < bookingList.size()) {
                     bookingList.remove(position);
                     notifyItemRemoved(position);
                 } else {
-
-                    Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Đặt sân không tồn tại", Toast.LENGTH_SHORT).show();
                 }
-
             } else {
                 // Xoá thất bại
                 Toast.makeText(context, "Lỗi khi xoá đặt sân", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
-
 
 
 }

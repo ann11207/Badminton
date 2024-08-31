@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.badminton">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -17,6 +18,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Badminton"
         tools:targetApi="31">
+        <activity
+            android:name=".View.Admin.Setting.Products.ManageProduct"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Calander.Calander"
+            android:exported="false" />
+        <activity
+            android:name=".test"
+            android:exported="false" />
         <activity
             android:name=".View.User.BookingCourt.dialog_available_times"
             android:exported="false" />
