@@ -63,5 +63,7 @@
     <string name="client_id">
         {"installed":{"client_id":"130916583069-65fg13aibsm0gsf68n05icb28m0d6osl.apps.googleusercontent.com","project_id":"calander-api-badminton","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs"}}
     </string>
+    <string name="select_catalog">
 
+</string>
 </resources>

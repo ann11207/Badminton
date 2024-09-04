@@ -19,6 +19,18 @@
         android:theme="@style/Theme.Badminton"
         tools:targetApi="31">
         <activity
+            android:name=".View.Admin.Setting.Products.item_product"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Products.list_item_product"
+            android:exported="false" />
+        <activity
+            android:name=".View.Adapter.ProductAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".View.Admin.Setting.Products.CustomShowProduct"
+            android:exported="false" />
+        <activity
             android:name=".View.Admin.Setting.Products.ManageProduct"
             android:exported="false" />
         <activity

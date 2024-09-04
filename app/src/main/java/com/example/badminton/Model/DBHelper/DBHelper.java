@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 public class DBHelper extends SQLiteOpenHelper {
     public DBHelper(Context context) {
-        super(context, "QL_BadmintonCourt.db", null, 9);
+        super(context, "QL_BadmintonCourt.db", null, 10);
     }
 
     @Override
@@ -33,6 +33,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 " price DOUBLE,   " +
                 "FOREIGN KEY(court_id) REFERENCES Court(id), " +
                 "FOREIGN KEY(customer_id) REFERENCES Customer(id))");
+
+
         db.execSQL("create Table Bill (bill_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "court_id INTEGER, " +
                 "customer_id INTEGER, " +
@@ -41,15 +43,21 @@ public class DBHelper extends SQLiteOpenHelper {
                 " play_time_minutes INTEGER," +
                 "FOREIGN KEY(court_id) REFERENCES Court(id), " +
                 "FOREIGN KEY(customer_id) REFERENCES Customer(id))");
-        db.execSQL("create Table Catalog(catalog_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+
+        db.execSQL("create Table Catalog(" +
+                "catalog_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "name TEXT NOT NULL UNIQUE)");
 
         db.execSQL("create Table Product(product_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "name TEXT NOT NULL UNIQUE, " +
                 "price DOUBLE NOT NULL, " +
                 "image BLOB, " +
-                "quantity INTEGER )");
+                "quantity INTEGER, " +
+                "catalog_id INTEGER, " +
+                "FOREIGN KEY(catalog_id) REFERENCES Catalog(catalog_id))");
+
     }
+
 
 
     @Override
@@ -59,6 +67,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("drop Table if exists Customer");
         db.execSQL("drop Table if exists Booking");
         db.execSQL("drop Table if exists Bill");
+        db.execSQL("drop Table if exists Catalog");
+        db.execSQL("drop Table if exists Product");
 
         onCreate(db);
     }
