@@ -34,26 +34,18 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:orientation="vertical">
 
                 <GridView
+
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:numColumns="3">
                 </GridView>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-                <GridView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:numColumns="2">
-                </GridView>
-            </LinearLayout>
+
 
         </LinearLayout>
 

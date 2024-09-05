@@ -92,4 +92,19 @@ public class catalogDB extends DBHelper {
         db.close();
         return productList;
     }
+    public int updateProduct(ProductDBModel product) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", product.getName());
+        contentValues.put("price", product.getPrice());
+        contentValues.put("image", product.getImage());
+        contentValues.put("quantity", product.getQuantity());
+        return db.update("Product", contentValues, "product_id = ?", new String[]{String.valueOf(product.getProductId())});
+    }
+
+    // Xóa sản phẩm
+    public int deleteProduct(int productId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete("Product", "product_id = ?", new String[]{String.valueOf(productId)});
+    }
 }

@@ -19,6 +19,9 @@
         android:theme="@style/Theme.Badminton"
         tools:targetApi="31">
         <activity
+            android:name=".View.Admin.Setting.Products.dialog_edit_product"
+            android:exported="false" />
+        <activity
             android:name=".View.Admin.Setting.Products.item_product"
             android:exported="false" />
         <activity

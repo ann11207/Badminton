@@ -116,7 +116,7 @@ public class ManageProduct extends AppCompatActivity {
             }
         });
 
-        // Show products when a catalog is selected
+
         spinnerCatalog.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
