@@ -42,5 +42,38 @@ public class productDB extends DBHelper {
         return db.delete("Product", "product_id = ?", new String[]{String.valueOf(product_id)});
     }
 
+    public List<ProductDBModel> getAllProduct() {
+        List<ProductDBModel> productList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Query to select all products
+        Cursor cursor = db.rawQuery("SELECT * FROM Product", null);
+
+        // Check if cursor has data
+        if (cursor.moveToFirst()) {
+            do {
+                // Retrieve data from the cursor and create a ProductDBModel object
+                int product_id = cursor.getInt(cursor.getColumnIndexOrThrow("product_id"));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+                double price = cursor.getDouble(cursor.getColumnIndexOrThrow("price"));
+                byte[] image = cursor.getBlob(cursor.getColumnIndexOrThrow("image"));
+                int quantity = cursor.getInt(cursor.getColumnIndexOrThrow("quantity"));
+
+
+                // Create a ProductDBModel object
+                ProductDBModel product = new ProductDBModel(product_id, name, price, image, quantity);
+
+                // Add product to the list
+                productList.add(product);
+            } while (cursor.moveToNext());
+        }
+
+        // Close cursor and database connection
+        cursor.close();
+        db.close();
+
+        return productList;
+    }
+
 
 }

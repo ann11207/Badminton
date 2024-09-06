@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 public class DBHelper extends SQLiteOpenHelper {
     public DBHelper(Context context) {
-        super(context, "QL_BadmintonCourt.db", null, 10);
+        super(context, "QL_BadmintonCourt.db", null, 12);
     }
 
     @Override
@@ -36,11 +36,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
         db.execSQL("create Table Bill (bill_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "product_id INTEGER, "+
                 "court_id INTEGER, " +
                 "customer_id INTEGER, " +
                 "total_price DOUBLE," +
                 "date TEXT," +
                 " play_time_minutes INTEGER," +
+                "FOREIGN KEY(product_id) REFERENCES Product(product_id), " +
                 "FOREIGN KEY(court_id) REFERENCES Court(id), " +
                 "FOREIGN KEY(customer_id) REFERENCES Customer(id))");
 

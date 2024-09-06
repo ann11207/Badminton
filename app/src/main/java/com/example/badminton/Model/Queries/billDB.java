@@ -47,7 +47,9 @@ public class billDB extends DBHelper {
         if (cursor.moveToFirst()) {
             do {
                 BillDBModel bill = new BillDBModel();
+
                 bill.setBillId(cursor.getInt(0));
+
                 bill.setCourtId(cursor.getInt(1));
                 bill.setCustomerId(cursor.getInt(2));
                 bill.setTotalPrice(cursor.getDouble(3));

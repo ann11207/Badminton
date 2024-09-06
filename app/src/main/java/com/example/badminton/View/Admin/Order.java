@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.Button;
+import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,26 +17,33 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.badminton.Controller.PriceCalculator;
 import com.example.badminton.Model.BillDBModel;
-import com.example.badminton.Model.BookingDBModel;
 import com.example.badminton.Model.CourtDBModel;
 import com.example.badminton.Model.CustomerDBModel;
+import com.example.badminton.Model.ProductDBModel;
 import com.example.badminton.Model.Queries.billDB;
 import com.example.badminton.Model.Queries.bookingDB;
 import com.example.badminton.Model.Queries.courtDB;
 import com.example.badminton.Model.Queries.customerDB;
+import com.example.badminton.Model.Queries.productDB;
 import com.example.badminton.R;
+import com.example.badminton.View.Adapter.BillProductAdapter;
+import com.example.badminton.View.Adapter.GridViewProductAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class Order extends AppCompatActivity {
 
     private int courtId;
+    private int productId;
     private int customerId;
     private double customerPrice;
     private TextView textViewCourtName;
@@ -42,11 +51,23 @@ public class Order extends AppCompatActivity {
     private TextView textViewTime;
     private Button startButton;
     private Button endButton;
+    private Button payButton;
+    private GridView gridViewProduct;
+    private ListView listViewBillProduct;
 
     private courtDB courtDB;
     private customerDB customerDB;
     private bookingDB bookingDB;
     private billDB billDB;
+    private List<ProductDBModel> productList;
+
+    private List<ProductDBModel> selectedProducts = new ArrayList<>();
+    private HashMap<Integer, Integer> productQuantities = new HashMap<>();
+    private BillProductAdapter billProductAdapter;
+
+    private GridViewProductAdapter productAdapter;
+
+    private boolean isStarted = false;
 
     private long startTime;
     private long elapsedTime = 0;
@@ -59,11 +80,72 @@ public class Order extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
 
+
+        gridViewProduct = findViewById(R.id.gridView_product);
+        productList = loadProducts();
+        productAdapter = new GridViewProductAdapter(this, productList);
+        gridViewProduct.setAdapter(productAdapter);
+
+
+
+        listViewBillProduct = findViewById(R.id.listView_billProduct);
+        billProductAdapter = new BillProductAdapter(this, selectedProducts, productQuantities);
+        listViewBillProduct.setAdapter(billProductAdapter);
+
+
+        gridViewProduct.setOnItemClickListener((parent, view, position, id) -> {
+            ProductDBModel selectedProduct = productList.get(position);
+            int productId = selectedProduct.getProductId();
+
+            if (productQuantities.containsKey(productId)) {
+                // Nếu sản phẩm đã được chọn, tăng số lượng
+                int currentQuantity = productQuantities.get(productId);
+                productQuantities.put(productId, currentQuantity + 1);
+            } else {
+                // Nếu sản phẩm chưa được chọn, thêm vào danh sách và đặt số lượng là 1
+                selectedProducts.add(selectedProduct);
+                productQuantities.put(productId, 1);
+            }
+
+            // Cập nhật giao diện ListView
+            billProductAdapter.notifyDataSetChanged();
+        });
+
+
         textViewCourtName = findViewById(R.id.textViewCourtName);
         textViewCustomerName = findViewById(R.id.textViewCustomerName);
         textViewTime = findViewById(R.id.textViewTime);
         startButton = findViewById(R.id.buttonStart);
         endButton = findViewById(R.id.buttonEnd);
+
+        payButton = findViewById(R.id.buttonPay);
+        payButton.setOnClickListener(v -> {
+            long playTimeMinutes = elapsedTime / (60 * 1000);
+
+            int startHour = getStartHour(startTime);
+            int endHour = getEndHour(System.currentTimeMillis());
+
+            double price = PriceCalculator.calculateTotalPrice(customerPrice, playTimeMinutes, startHour, endHour);
+
+            double totalPriceProduct = 0;
+            for (ProductDBModel product : selectedProducts) {
+                int quantity = productQuantities.get(product.getProductId());
+                totalPriceProduct += product.getPrice() * quantity;
+            }
+
+            double totalPrice = price + totalPriceProduct;
+
+            // Tạo hóa đơn
+            BillDBModel bill = new BillDBModel();
+            bill.setDate(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date()));
+            bill.setCourtId(courtId);
+            bill.setCustomerId(customerId);
+            bill.setTotalPrice(totalPrice);
+            bill.setPlayTimeMinutes((int) playTimeMinutes);
+
+            // Hiển thị thông tin hóa đơn
+            showInvoiceDialog(bill);
+        });
 
         courtDB = new courtDB(this);
         customerDB = new customerDB(this);
@@ -87,6 +169,7 @@ public class Order extends AppCompatActivity {
 
         loadCourtInfo();
         loadCustomerInfo();
+        loadProducts();
 
         // Khôi phục thời gian nếu có
         SharedPreferences prefs = getSharedPreferences("OrderPrefs", MODE_PRIVATE);
@@ -146,8 +229,69 @@ public class Order extends AppCompatActivity {
         }
     }
 
-    private void startCourt() {
+//    private void startCourt() {
+//        startTime = System.currentTimeMillis();
+//
+//        // Tạo đơn đặt sân và lưu thông tin bắt đầu cùng giá tiền
+//        long bookingId = bookingDB.createBooking(courtId, customerId, startTime, 0, customerPrice);
+//        if (bookingId != -1) {
+//            SharedPreferences.Editor editor = getSharedPreferences("OrderPrefs", MODE_PRIVATE).edit();
+//            editor.putLong("startTime", startTime);
+//            editor.putLong("bookingId", bookingId);
+//            editor.apply();
+//
+//            CourtDBModel court = courtDB.getCourtById(courtId);
+//            if (court != null) {
+//                // Cập nhật trạng thái sân trong cơ sở dữ liệu cục bộ
+//                courtDB.updateCourtStatus(courtId, "Hoạt động");
+//
+//
+//                DatabaseReference courtRef = FirebaseDatabase.getInstance().getReference("courts").child(String.valueOf(courtId));
+//                courtRef.child("statusCourt").setValue("Hoạt động").addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        Toast.makeText(this, "Hoạt động", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//
+//                startTimer();
+//            } else {
+//                Toast.makeText(this, "Không tìm thấy sân", Toast.LENGTH_SHORT).show();
+//            }
+//        } else {
+//            Toast.makeText(this, "Không thể tạo đơn đặt sân", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//
+//    private void startTimer() {
+//        if (isTimerRunning) return;
+//
+//        isTimerRunning = true;
+//
+//        timerRunnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                long currentTime = System.currentTimeMillis();
+//                long elapsedMillis = currentTime - startTime;
+//                int elapsedSeconds = (int) (elapsedMillis / 1000) % 60;
+//                int elapsedMinutes = (int) ((elapsedMillis / (1000 * 60)) % 60);
+//                int elapsedHours = (int) ((elapsedMillis / (1000 * 60 * 60)) % 24);
+//
+//                String timeString = String.format(Locale.getDefault(), "%02d:%02d:%02d", elapsedHours, elapsedMinutes, elapsedSeconds);
+//                textViewTime.setText(timeString);
+//
+//                handler.postDelayed(this, 1000);
+//            }
+//        };
+//
+//        handler.post(timerRunnable);
+//    }
+private void startCourt() {
+    if (!isStarted) {
         startTime = System.currentTimeMillis();
+        isStarted = true;
 
         // Tạo đơn đặt sân và lưu thông tin bắt đầu cùng giá tiền
         long bookingId = bookingDB.createBooking(courtId, customerId, startTime, 0, customerPrice);
@@ -162,16 +306,17 @@ public class Order extends AppCompatActivity {
                 // Cập nhật trạng thái sân trong cơ sở dữ liệu cục bộ
                 courtDB.updateCourtStatus(courtId, "Hoạt động");
 
-
+                // Cập nhật trạng thái sân trong Firebase
                 DatabaseReference courtRef = FirebaseDatabase.getInstance().getReference("courts").child(String.valueOf(courtId));
                 courtRef.child("statusCourt").setValue("Hoạt động").addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(this, "Hoạt động", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Cập nhật trạng thái sân thất bại", Toast.LENGTH_SHORT).show();
                     }
                 });
 
+                // Bắt đầu đếm thời gian
                 startTimer();
             } else {
                 Toast.makeText(this, "Không tìm thấy sân", Toast.LENGTH_SHORT).show();
@@ -179,8 +324,10 @@ public class Order extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Không thể tạo đơn đặt sân", Toast.LENGTH_SHORT).show();
         }
+    } else {
+        Toast.makeText(this, "Sân đã được bắt đầu trước đó", Toast.LENGTH_SHORT).show();
     }
-
+}
 
     private void startTimer() {
         if (isTimerRunning) return;
@@ -213,42 +360,80 @@ public class Order extends AppCompatActivity {
         handler.removeCallbacks(timerRunnable);
     }
 
-    private void endCourt() {
-        long endTime = System.currentTimeMillis();
-        long playTimeMillis = endTime - startTime;
-        elapsedTime += playTimeMillis;
-        long playTimeMinutes = elapsedTime / (60 * 1000);
-
-        stopTimer();
-
-        int startHour = getStartHour(startTime);
-        int endHour = getEndHour(endTime);
-
-        double price = PriceCalculator.calculateTotalPrice(customerPrice, playTimeMinutes, startHour, endHour);
-
-        // Tạo hóa đơn
-        BillDBModel bill = new BillDBModel();
-        bill.setDate(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date()));
-        bill.setCourtId(courtId);
-        bill.setCustomerId(customerId);
-        bill.setTotalPrice(price);
-        bill.setPlayTimeMinutes((int) playTimeMinutes);
-
-        courtDB.updateCourtStatus(courtId, "Trống");
-
-        // Cập nhật trạng thái sân trong Firebase
-        DatabaseReference courtRef = FirebaseDatabase.getInstance().getReference("courts").child(String.valueOf(courtId));
-        courtRef.child("statusCourt").setValue("Trống").addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Toast.makeText(Order.this, "Sân đã được cập nhật trạng thái là 'Trống'", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(Order.this, "Cập nhật trạng thái sân thất bại trong Firebase", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Hiển thị thông tin hóa đơn và reset thời gian
-        showInvoiceDialog(bill);
+//    private void endCourt() {
+//
+//        long endTime = System.currentTimeMillis();
+//        long playTimeMillis = endTime - startTime;
+//        elapsedTime += playTimeMillis;
+//        long playTimeMinutes = elapsedTime / (60 * 1000);
+//
+//        stopTimer();
+//
+//        int startHour = getStartHour(startTime);
+//        int endHour = getEndHour(endTime);
+//
+//        double price = PriceCalculator.calculateTotalPrice(customerPrice, playTimeMinutes, startHour, endHour);
+//
+//
+//        double totalPriceProduct = 0;
+//        for (ProductDBModel product : selectedProducts) {
+//            int quantity = productQuantities.get(product.getProductId());
+//            totalPriceProduct += product.getPrice() * quantity;
+//        }
+//
+//
+//        double totalPrice = price + totalPriceProduct;
+//        // Tạo hóa đơn
+//        BillDBModel bill = new BillDBModel();
+//        bill.setDate(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date()));
+//        bill.setCourtId(courtId);
+//        bill.setProduct_id(productId);
+//        bill.setCustomerId(customerId);
+//        bill.setTotalPrice(totalPrice);
+//        bill.setPlayTimeMinutes((int) playTimeMinutes);
+//
+//        courtDB.updateCourtStatus(courtId, "Trống");
+//
+//        // Cập nhật trạng thái sân trong Firebase
+//        DatabaseReference courtRef = FirebaseDatabase.getInstance().getReference("courts").child(String.valueOf(courtId));
+//        courtRef.child("statusCourt").setValue("Trống").addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                Toast.makeText(Order.this, "Sân đã được cập nhật trạng thái là 'Trống'", Toast.LENGTH_SHORT).show();
+//            } else {
+//                Toast.makeText(Order.this, "Cập nhật trạng thái sân thất bại trong Firebase", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        // Hiển thị thông tin hóa đơn và reset thời gian
+//        showInvoiceDialog(bill);
+//    }
+private void endCourt() {
+    if (!isStarted) {
+        Toast.makeText(Order.this, "Bạn phải bấm nút bắt đầu trước khi dừng", Toast.LENGTH_SHORT).show();
+        return;
     }
+
+    long endTime = System.currentTimeMillis();
+    long playTimeMillis = endTime - startTime;
+    elapsedTime += playTimeMillis;
+    long playTimeMinutes = elapsedTime / (60 * 1000);
+
+    stopTimer();
+    isStarted = false;
+
+    courtDB.updateCourtStatus(courtId, "Trống");
+
+    // Cập nhật trạng thái sân trong Firebase
+    DatabaseReference courtRef = FirebaseDatabase.getInstance().getReference("courts").child(String.valueOf(courtId));
+    courtRef.child("statusCourt").setValue("Trống").addOnCompleteListener(task -> {
+        if (task.isSuccessful()) {
+            Toast.makeText(Order.this, "Sân đã được cập nhật trạng thái là 'Trống'", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(Order.this, "Cập nhật trạng thái sân thất bại trong Firebase", Toast.LENGTH_SHORT).show();
+        }
+    });
+}
+
 
 
     private void showInvoiceDialog(BillDBModel bill) {
@@ -322,4 +507,10 @@ public class Order extends AppCompatActivity {
         calendar.setTimeInMillis(timeInMillis);
         return calendar.get(Calendar.HOUR_OF_DAY);
     }
+    private List<ProductDBModel> loadProducts() {
+       productDB productDB = new productDB(this);
+        return productDB.getAllProduct();
+    }
+
+
 }
